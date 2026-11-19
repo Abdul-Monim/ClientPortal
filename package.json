@@ -5,7 +5,7 @@
   "description": "Lightweight white-label client hub for freelance developers and designers.",
   "author": "M. Abdul Monim <muhammadabdulmonimbhatti@gmail.com>",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
