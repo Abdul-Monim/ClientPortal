@@ -12,6 +12,7 @@ import {
   CreditCard,
   Download,
   ExternalLink,
+  Eye,
   Figma,
   FileText,
   Film,
@@ -36,7 +37,7 @@ import {
 } from "lucide-react";
 import { calculateProjectProgressPct, countCompletedMilestones } from "@/domain/milestones";
 import { formatCurrencyCents } from "@/domain/money";
-import type { Deliverable, DeliverableStatus, MilestoneStatus, ProjectBundle } from "@/domain/types";
+import type { Deliverable, DeliverableStatus, Invoice, MilestoneStatus, ProjectBundle } from "@/domain/types";
 import { BrandAvatar } from "@/components/ui/BrandAvatar";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -125,6 +126,19 @@ export function ClientPortalHub({
   const [commentPostingId, setCommentPostingId] = useState<string | null>(null);
   const [generalDiscussionDraft, setGeneralDiscussionDraft] = useState("");
   const [generalDiscussionPosting, setGeneralDiscussionPosting] = useState(false);
+
+  // Payment Settlement Modal state
+  const [paymentModal, setPaymentModal] = useState<Invoice | null>(null);
+  const [payingInvoice, setPayingInvoice] = useState(false);
+
+  // Asset Lightbox / Inline Preview state
+  const [previewDeliverable, setPreviewDeliverable] = useState<{
+    title: string;
+    kind: Deliverable["kind"];
+    url: string;
+    notes?: string;
+    versionNumber: number;
+  } | null>(null);
 
   // Financial & Progress metrics
   const progressPct = calculateProjectProgressPct(bundle.milestones);
@@ -336,6 +350,37 @@ export function ClientPortalHub({
       setBanner({ ok: false, text: "Unable to post message right now." });
     } finally {
       setGeneralDiscussionPosting(false);
+    }
+  }
+
+  async function handleConfirmPayment(invoiceId: string, useStripe: boolean = false) {
+    setPayingInvoice(true);
+    setBanner(null);
+    try {
+      const res = await fetch(`/api/portal/invoices/${invoiceId}/pay`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: bundle.project.id,
+          useStripe,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setBanner({ ok: false, text: data.error || "Unable to settle invoice." });
+        return;
+      }
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+      setBanner({ ok: true, text: data.message || "Invoice settled successfully!" });
+      setPaymentModal(null);
+      router.refresh();
+    } catch {
+      setBanner({ ok: false, text: "Payment request could not be completed." });
+    } finally {
+      setPayingInvoice(false);
     }
   }
 
@@ -1157,19 +1202,38 @@ export function ClientPortalHub({
                     {/* Bottom Actions Row: Launch External, Approve, or Comment */}
                     <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800 space-y-3">
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        {activeVersion?.externalUrl ? (
-                          <a
-                            href={activeVersion.externalUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="pill-btn pill-btn-outline px-4 py-2 text-xs"
-                          >
-                            <ExternalLink className="h-3.5 w-3.5" />
-                            <span>Open Prototype</span>
-                          </a>
-                        ) : (
-                          <span className="text-xs text-neutral-400">Direct file asset</span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {(activeVersion?.assetUrl || activeVersion?.externalUrl) && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const targetUrl = activeVersion.assetUrl || activeVersion.externalUrl || "";
+                                setPreviewDeliverable({
+                                  title: del.title,
+                                  kind: del.kind,
+                                  url: targetUrl,
+                                  notes: activeVersion.releaseNotes,
+                                  versionNumber: activeVersion.versionNumber,
+                                });
+                              }}
+                              className="pill-btn pill-btn-outline px-3.5 py-1.5 text-xs inline-flex items-center gap-1.5"
+                            >
+                              <Eye className="h-3.5 w-3.5" />
+                              <span>Inspect Asset</span>
+                            </button>
+                          )}
+                          {activeVersion?.externalUrl && (
+                            <a
+                              href={activeVersion.externalUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="pill-btn pill-btn-outline px-3.5 py-1.5 text-xs inline-flex items-center gap-1.5"
+                            >
+                              <ExternalLink className="h-3.5 w-3.5" />
+                              <span>Open External</span>
+                            </a>
+                          )}
+                        </div>
 
                         {del.status === "in_review" && (
                           <div className="flex items-center gap-2">
@@ -1461,8 +1525,8 @@ export function ClientPortalHub({
                             {inv.status !== "paid" && (
                               <button
                                 type="button"
-                                onClick={() => setBanner({ ok: true, text: `Stripe checkout opened for ${inv.invoiceNumber}.` })}
-                                className="pill-btn pill-btn-brand px-3.5 py-1.5 text-xs"
+                                onClick={() => setPaymentModal(inv)}
+                                className="pill-btn pill-btn-brand px-3.5 py-1.5 text-xs inline-flex items-center gap-1.5 shadow-xs"
                               >
                                 <CreditCard className="h-3 w-3" />
                                 <span>Pay Now</span>
@@ -1729,6 +1793,173 @@ export function ClientPortalHub({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 5. INVOICE PAYMENT SETTLEMENT MODAL                                       */}
+      {/* ========================================================================= */}
+      {paymentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-[2.5rem] bg-white dark:bg-[#0E131F] p-6 sm:p-8 border border-neutral-200 dark:border-neutral-800 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600/10 text-blue-500 ring-1 ring-blue-500/20">
+                  <CreditCard className="h-4 w-4" />
+                </span>
+                <div>
+                  <h3 className="text-base font-bold text-neutral-900 dark:text-white">
+                    Settle Invoice {paymentModal.invoiceNumber}
+                  </h3>
+                  <p className="text-[11px] text-neutral-400">
+                    Prepared for {bundle.project.clientCompany}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPaymentModal(null)}
+                className="rounded-full p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-white transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 p-4 border border-neutral-200/60 dark:border-neutral-800 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-neutral-500">Phase Title</span>
+                <span className="font-semibold text-neutral-900 dark:text-white max-w-[200px] truncate">
+                  {paymentModal.title}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-neutral-500">Due Date</span>
+                <span className="font-mono text-neutral-700 dark:text-neutral-300">
+                  {paymentModal.dueDate}
+                </span>
+              </div>
+              <div className="pt-2 border-t border-neutral-200/60 dark:border-neutral-800/60 flex items-center justify-between">
+                <span className="text-xs font-bold text-neutral-900 dark:text-white">
+                  Total Amount Due
+                </span>
+                <span className="text-lg font-bold font-mono text-blue-600 dark:text-blue-400">
+                  {formatCurrencyCents(paymentModal.totalCents)}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-2.5">
+              <button
+                type="button"
+                disabled={payingInvoice}
+                onClick={() => handleConfirmPayment(paymentModal.id, false)}
+                className="w-full pill-btn pill-btn-brand py-3 text-xs flex items-center justify-center gap-2 shadow-xs disabled:opacity-60"
+              >
+                {payingInvoice ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                )}
+                <span>Instant Card Settlement ({formatCurrencyCents(paymentModal.totalCents)})</span>
+              </button>
+
+              {paymentModal.stripeHostedUrl && (
+                <button
+                  type="button"
+                  disabled={payingInvoice}
+                  onClick={() => handleConfirmPayment(paymentModal.id, true)}
+                  className="w-full pill-btn pill-btn-outline py-2.5 text-xs flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Checkout on Official Stripe Portal</span>
+                </button>
+              )}
+            </div>
+
+            <p className="text-[11px] text-center text-neutral-400 pt-1">
+              Encrypted 256-bit SSL transaction. A PDF receipt will be available immediately.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 6. DELIVERABLE ASSET INLINE LIGHTBOX PREVIEW MODAL                        */}
+      {/* ========================================================================= */}
+      {previewDeliverable && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6">
+          <div className="w-full max-w-4xl rounded-[2.5rem] bg-white dark:bg-[#0E131F] border border-neutral-200 dark:border-neutral-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 shrink-0">
+              <div className="flex items-center gap-3">
+                <KindIcon kind={previewDeliverable.kind} className="h-5 w-5 text-blue-500" />
+                <div>
+                  <h3 className="text-base font-bold text-neutral-900 dark:text-white">
+                    {previewDeliverable.title}
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-mono">
+                    Version v{previewDeliverable.versionNumber} • {previewDeliverable.kind.toUpperCase()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {previewDeliverable.url && (
+                  <a
+                    href={previewDeliverable.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="pill-btn pill-btn-outline px-3.5 py-1.5 text-xs inline-flex items-center gap-1.5"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    <span>Open in New Tab</span>
+                  </a>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setPreviewDeliverable(null)}
+                  className="rounded-full p-2 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition"
+                  title="Close preview"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Media Body */}
+            <div className="flex-1 overflow-auto p-6 bg-neutral-100 dark:bg-black/40 flex items-center justify-center min-h-[320px]">
+              {previewDeliverable.kind === "image" ? (
+                <img
+                  src={previewDeliverable.url}
+                  alt={previewDeliverable.title}
+                  className="max-h-[60vh] max-w-full rounded-2xl object-contain shadow-lg ring-1 ring-white/10"
+                />
+              ) : previewDeliverable.url.startsWith("http") ? (
+                <iframe
+                  src={previewDeliverable.url}
+                  title={previewDeliverable.title}
+                  className="w-full h-[60vh] rounded-2xl border border-neutral-300 dark:border-neutral-800 bg-white"
+                  sandbox="allow-scripts allow-same-origin allow-popups"
+                />
+              ) : (
+                <div className="text-center p-8 space-y-2">
+                  <FileText className="mx-auto h-12 w-12 text-neutral-400" />
+                  <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+                    Document ready for review
+                  </p>
+                  <p className="text-xs text-neutral-500 font-mono">{previewDeliverable.url}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Release notes footer */}
+            {previewDeliverable.notes && (
+              <div className="px-6 py-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 shrink-0 text-xs text-neutral-600 dark:text-neutral-400">
+                <span className="font-semibold text-neutral-900 dark:text-white">Changelog Notes: </span>
+                <span>{previewDeliverable.notes}</span>
+              </div>
+            )}
           </div>
         </div>
       )}

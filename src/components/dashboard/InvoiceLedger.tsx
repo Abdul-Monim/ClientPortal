@@ -10,6 +10,7 @@ import {
   Loader2,
   Plus,
   Receipt,
+  Send,
   Trash2,
 } from "lucide-react";
 import {
@@ -118,7 +119,7 @@ export function InvoiceLedger({
   function handleStatusChange(
     invoiceId: string,
     invProjectId: string,
-    status: "paid" | "void"
+    status: "sent" | "paid" | "void"
   ) {
     startTransition(async () => {
       const res = await updateInvoiceStatusAction({
@@ -212,6 +213,17 @@ export function InvoiceLedger({
                           <ExternalLink className="h-3.5 w-3.5" />
                           <span>Stripe</span>
                         </a>
+                      )}
+                      {inv.status === "draft" && (
+                        <button
+                          type="button"
+                          disabled={isPending}
+                          onClick={() => handleStatusChange(inv.id, inv.projectId, "sent")}
+                          className="pill-btn pill-btn-brand px-3 py-1.5 text-xs"
+                        >
+                          <Send className="h-3.5 w-3.5" />
+                          <span>Issue</span>
+                        </button>
                       )}
                       {(inv.status === "sent" || inv.status === "overdue") && (
                         <>
