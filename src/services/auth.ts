@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { isSupabaseConfigured } from "@/infrastructure/config/env";
+import { isSupabaseAuthConfigured } from "@/infrastructure/config/env";
 import { createSupabaseServerSessionClient } from "@/infrastructure/repositories/supabase-client";
 import {
   getPortalCookieName,
@@ -22,7 +22,7 @@ async function safeGetCookies() {
 }
 
 export async function getAuthenticatedFreelancer(): Promise<AuthenticatedFreelancer | null> {
-  if (isSupabaseConfigured()) {
+  if (isSupabaseAuthConfigured()) {
     try {
       const supabase = await createSupabaseServerSessionClient();
       const {
@@ -37,19 +37,19 @@ export async function getAuthenticatedFreelancer(): Promise<AuthenticatedFreelan
         };
       }
     } catch {
-      // Supabase network or schema fallback
+      // Supabase network or session fallback
     }
   }
 
-  // Check lightweight sandbox cookie
+  // Check lightweight sandbox or fallback cookie
   const cookieStore = await safeGetCookies();
-  const sandboxCookie = cookieStore?.get("cp_freelancer_session")?.value;
+  const sessionCookie = cookieStore?.get("cp_freelancer_session")?.value;
 
-  if (sandboxCookie === "sandbox-authenticated" || process.env.NODE_ENV === "test") {
+  if (sessionCookie || process.env.NODE_ENV === "test") {
     return {
-      id: "sandbox-owner-01",
+      id: sessionCookie?.startsWith("cloud:") ? sessionCookie.replace("cloud:", "") : "sandbox-owner-01",
       email: "hello@ateliervance.studio",
-      mode: "sandbox",
+      mode: sessionCookie?.startsWith("cloud:") ? "cloud" : "sandbox",
     };
   }
 

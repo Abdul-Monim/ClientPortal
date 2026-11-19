@@ -1,5 +1,12 @@
 export type RuntimeMode = "cloud" | "sandbox";
 
+export function isSupabaseAuthConfigured(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
+  );
+}
+
 export function isSupabaseConfigured(): boolean {
   if (process.env.PORTAL_STORAGE_MODE === "sandbox") {
     return false;

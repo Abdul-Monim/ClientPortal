@@ -58,11 +58,20 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Network or token refresh exception
+  }
 
-  if (!user && pathname.startsWith("/dashboard")) {
+  const hasSandboxSession = Boolean(
+    request.cookies.get("cp_freelancer_session")?.value ||
+      process.env.PORTAL_STORAGE_MODE === "sandbox"
+  );
+
+  if (!user && !hasSandboxSession && pathname.startsWith("/dashboard")) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("next", pathname);

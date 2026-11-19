@@ -87,7 +87,13 @@ function kindBadgeMeta(kind: Deliverable["kind"]) {
   }
 }
 
-export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
+export function ClientPortalHub({
+  bundle,
+  isOwnerPreview = false,
+}: {
+  bundle: ProjectBundle;
+  isOwnerPreview?: boolean;
+}) {
   const router = useRouter();
 
   // Navigation & Layout states
@@ -568,6 +574,27 @@ export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
       {/* 3. MAIN PORTAL CONTENT AREA (Strictly <= 5% total side margin)            */}
       {/* ========================================================================= */}
       <main className="flex-1 min-w-0 px-3 sm:px-6 lg:px-8 py-4 lg:py-6 space-y-6 w-full max-w-[1760px] mx-auto mt-14 lg:mt-0">
+        {/* Studio Owner Preview Notice */}
+        {isOwnerPreview && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-full bg-blue-500/10 border border-blue-500/25 px-5 py-2.5 text-xs text-blue-900 dark:text-blue-200">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+              <span className="font-bold">Studio Owner Preview</span>
+              <span className="text-blue-700/80 dark:text-blue-300/80 hidden sm:inline">
+                You are previewing this client hub with full owner privileges (passcode gate bypassed).
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <a
+                href={`/dashboard/projects/${bundle.project.id}`}
+                className="rounded-full bg-blue-600 px-3.5 py-1 text-[11px] font-semibold text-white hover:bg-blue-500 transition shadow-xs"
+              >
+                Manage in Dashboard
+              </a>
+            </div>
+          </div>
+        )}
+
         {/* Top Control Bar: Breadcrumb, Search Filter, Alerts, Action Buttons */}
         <header className="flex flex-wrap items-center justify-between gap-3 rounded-full bg-white dark:bg-[#0A0E17] px-5 py-2.5 shadow-sm border border-neutral-200 dark:border-neutral-800">
           {/* Breadcrumb & Section indicator */}
