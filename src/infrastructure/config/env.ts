@@ -20,6 +20,10 @@ export function isStripeConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY?.trim());
 }
 
+export function isResendConfigured(): boolean {
+  return Boolean(process.env.RESEND_API_KEY?.trim());
+}
+
 export function getRuntimeMode(): RuntimeMode {
   return isSupabaseConfigured() ? "cloud" : "sandbox";
 }
