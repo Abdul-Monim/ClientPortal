@@ -20,14 +20,19 @@ describe("studio analytics telemetry engine", () => {
       referenceDate: new Date("2026-11-19T12:00:00.000Z"),
     });
 
+    const allDeliverables = bundles.flatMap((b) => b.deliverables);
+    const totalExpectedBilledCents = invoices
+      .filter((i) => i.status !== "draft" && i.status !== "void")
+      .reduce((s, i) => s + i.totalCents, 0);
+
     expect(analytics.kpis).toHaveLength(4);
-    expect(analytics.kpis[0]?.numericValue).toBe(2);
+    expect(analytics.kpis[0]?.numericValue).toBe(bundles.length);
     expect(analytics.activitySpline).toHaveLength(7);
-    expect(analytics.deliverableBreakdown.total).toBe(4);
+    expect(analytics.deliverableBreakdown.total).toBe(allDeliverables.length);
     expect(analytics.deliverableBreakdown.segments).toHaveLength(4);
-    expect(analytics.invoiceBreakdown.total).toBe(3);
-    expect(analytics.invoiceBreakdown.totalBilledCents).toBe(1_108_000);
-    expect(analytics.projectProgressSummary).toHaveLength(2);
+    expect(analytics.invoiceBreakdown.total).toBe(invoices.length);
+    expect(analytics.invoiceBreakdown.totalBilledCents).toBe(totalExpectedBilledCents);
+    expect(analytics.projectProgressSummary).toHaveLength(bundles.length);
   });
 
   it("handles empty studio data gracefully without divide-by-zero", () => {
