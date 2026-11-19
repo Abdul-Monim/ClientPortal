@@ -7,8 +7,11 @@ import {
   FileCheck2,
   Lock,
   Receipt,
+  Sparkles,
+  ShieldCheck,
 } from "lucide-react";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LandingNavbar } from "@/components/landing/LandingNavbar";
+import { LandingInteractiveShowcase } from "@/components/landing/LandingInteractiveShowcase";
 import { getPortalRepository } from "@/infrastructure/repositories";
 
 export const dynamic = "force-dynamic";
@@ -27,74 +30,21 @@ export default async function HomePage() {
       {/* Outer Editorial Canvas Frame matching the Reference Comp strictly <= 5% side gap */}
       <div className="w-[95%] max-w-[1760px] mx-auto rounded-[2.5rem] border border-neutral-200/80 bg-white p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-300 dark:border-neutral-800 dark:bg-[#0C1017]">
         {/* ========================================================= */}
-        {/* 1. TOP NAVBAR */}
+        {/* 1. INTERACTIVE NAVBAR (MOBILE DRAWER + THEME TOGGLE) */}
         {/* ========================================================= */}
-        <header className="flex items-center justify-between pb-8 sm:pb-12 border-b border-neutral-100 dark:border-neutral-800/80">
-          {/* Logo Mark + Brand Title */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-900 transition-transform group-hover:scale-105">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
-              </svg>
-            </div>
-            <span className="font-editorial text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">
-              FreelanceOS
-            </span>
-          </Link>
-
-          {/* Navigation Links */}
-          <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-600 dark:text-neutral-300 md:flex">
-            <Link
-              href="#about"
-              className="hover:text-neutral-950 dark:hover:text-white transition"
-            >
-              About
-            </Link>
-            <Link
-              href="#features"
-              className="hover:text-neutral-950 dark:hover:text-white transition"
-            >
-              Feature
-            </Link>
-            <Link
-              href="#pricing"
-              className="hover:text-neutral-950 dark:hover:text-white transition"
-            >
-              Pricing
-            </Link>
-            <Link
-              href={samplePortalHref}
-              className="hover:text-neutral-950 dark:hover:text-white transition"
-            >
-              Live Demo
-            </Link>
-          </nav>
-
-          {/* Action Row */}
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <Link
-              href="/dashboard"
-              className="rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition flex items-center gap-2"
-            >
-              <span>Get started</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </header>
+        <LandingNavbar samplePortalHref={samplePortalHref} />
 
         {/* ========================================================= */}
-        {/* 2. HERO TWO-COLUMN SPLIT */}
+        {/* 2. HERO TWO-COLUMN SPLIT (ABOUT ANCHOR) */}
         {/* ========================================================= */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 py-10 sm:py-16 items-center">
+        <section id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 py-10 sm:py-16 items-center">
           {/* Left Column: Editorial Copy */}
           <div className="lg:col-span-6 space-y-6 sm:space-y-8">
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 px-3.5 py-1 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+              <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+              <span>Next-Generation Client Hub for Creatives</span>
+            </div>
+
             <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-neutral-950 dark:text-white leading-[1.08]">
               App To Work Your Way,
               <br />
@@ -102,8 +52,8 @@ export default async function HomePage() {
             </h1>
 
             <p className="text-base sm:text-lg text-neutral-500 dark:text-neutral-400 max-w-lg leading-relaxed">
-              A flexible workspace that lets you manage clients, projects, and workflows
-              from any moment in time and any place you choose.
+              A calm, dedicated client workspace that eliminates messy email chains.
+              Share deliverables, collect approvals, and get paid with zero login friction for your clients.
             </p>
 
             {/* CTA Group with Pill Button & Guarantee Badge */}
@@ -114,6 +64,14 @@ export default async function HomePage() {
               >
                 <span>Get started</span>
                 <ArrowRight className="h-4 w-4" />
+              </Link>
+
+              <Link
+                href={samplePortalHref}
+                className="rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 shadow-sm hover:bg-neutral-50 dark:hover:bg-neutral-800 transition flex items-center gap-2"
+              >
+                <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                <span>Explore Live Hub</span>
               </Link>
 
               <div className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300 font-medium">
@@ -145,7 +103,7 @@ export default async function HomePage() {
         {/* ========================================================= */}
         <section className="pt-8 sm:pt-12 pb-6 border-t border-neutral-100 dark:border-neutral-800/80">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 font-medium mb-6">
-            Trusted by freelancers and teams who work anywhere
+            Trusted by independent freelancers, studios, and agencies
           </p>
 
           <div className="grid grid-cols-4 sm:grid-cols-8 gap-6 sm:gap-8 items-center text-neutral-400 dark:text-neutral-600">
@@ -230,7 +188,7 @@ export default async function HomePage() {
               </h3>
               <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
                 Clients enter a simple password. No account creation, no password resets, no friction.
-                Secured by salted scrypt hashes and HMAC cookies.
+                Protected by instant bank-grade passcodes so clients can view deliverables immediately.
               </p>
             </div>
 
@@ -243,8 +201,8 @@ export default async function HomePage() {
                 Deliverables & Version Revisions
               </h3>
               <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Present Figma designs, Loom videos, PDFs, and staging links. Clients switch between
-                v1 and v2, leave timestamped comments, and sign off formally.
+                Present Figma designs, videos, PDFs, and staging links. Clients switch between
+                v1 and v2, leave timestamped feedback, and sign off with a single click.
               </p>
             </div>
 
@@ -254,18 +212,23 @@ export default async function HomePage() {
                 <Receipt className="h-4 w-4" />
               </div>
               <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
-                Hybrid Stripe & Branded PDF
+                Direct Stripe & Branded PDF
               </h3>
               <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Connect Stripe for direct online card settlements, or let clients download pure-JS
-                white-labeled PDF invoices generated in integer cents.
+                Connect Stripe for direct online card settlements, or let clients download
+                clean, official branded PDF invoices with itemized totals and instant receipts.
               </p>
             </div>
           </div>
         </section>
 
         {/* ========================================================= */}
-        {/* 5. PRICING SECTION */}
+        {/* 5. INTERACTIVE PRODUCT TOUR (DUAL PERSPECTIVES) */}
+        {/* ========================================================= */}
+        <LandingInteractiveShowcase samplePortalHref={samplePortalHref} />
+
+        {/* ========================================================= */}
+        {/* 6. PRICING SECTION */}
         {/* ========================================================= */}
         <section id="pricing" className="py-16 sm:py-20 border-t border-neutral-100 dark:border-neutral-800/80">
           <div className="text-center max-w-xl mx-auto">
@@ -304,7 +267,7 @@ export default async function HomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-emerald-500" />
-                    <span>Native PDF invoice generator</span>
+                    <span>Official PDF invoice generator</span>
                   </li>
                 </ul>
               </div>
@@ -372,7 +335,7 @@ export default async function HomePage() {
         </section>
 
         {/* ========================================================= */}
-        {/* 6. EDITORIAL FOOTER */}
+        {/* 7. EDITORIAL FOOTER */}
         {/* ========================================================= */}
         <footer className="pt-10 border-t border-neutral-100 dark:border-neutral-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
           <div className="flex items-center gap-2">

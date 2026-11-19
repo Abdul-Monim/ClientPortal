@@ -8,11 +8,26 @@ describe("Invoice Settlement & Financial State Machine", () => {
     const projects = await repo.listProjects(studio.id);
     const project = projects[0]!;
 
-    const bundle = await repo.getProjectBundleById(project.id);
-    const invoices = bundle?.invoices || [];
-    const openInvoice = invoices.find((i) => i.status === "sent" || i.status === "overdue") || invoices[0]!;
+    // Create a fresh sent invoice to test deterministic transition to paid
+    const testInvoice = await repo.createInvoice({
+      projectId: project.id,
+      title: "Design Retainer Settlement",
+      currency: "USD",
+      taxBps: 0,
+      lineItems: [
+        {
+          id: "li-settle-1",
+          description: "Design sprint retainer",
+          quantity: 1,
+          unitAmountCents: 250_000,
+        },
+      ],
+      notes: "Payment due upon receipt",
+      dueDate: "2026-12-15",
+      status: "sent",
+    });
 
-    const settled = await repo.updateInvoiceStatus(openInvoice.id, "paid", {
+    const settled = await repo.updateInvoiceStatus(testInvoice.id, "paid", {
       paymentMethodNote: "Card via Client Portal Hub",
     });
 
@@ -21,7 +36,7 @@ describe("Invoice Settlement & Financial State Machine", () => {
     expect(settled.paidAt).toBeDefined();
 
     // Verify retrieval reflects settled status
-    const ctx = await repo.getInvoiceWithContext(openInvoice.id);
+    const ctx = await repo.getInvoiceWithContext(testInvoice.id);
     expect(ctx?.invoice.status).toBe("paid");
   });
 

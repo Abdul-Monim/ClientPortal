@@ -1627,7 +1627,7 @@ export function ClientPortalHub({
             <div className="pb-2 border-b border-neutral-200 dark:border-neutral-800">
               <h2 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">Studio Profile & Security</h2>
               <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                Official studio contacts, service commitments, and cryptographic access status.
+                Official studio contacts, response commitments, and private portal security.
               </p>
             </div>
 
@@ -1666,17 +1666,17 @@ export function ClientPortalHub({
               <div className="rounded-[2.2rem] bg-white dark:bg-[#0E131F] p-6 border border-neutral-200 dark:border-neutral-800 shadow-sm space-y-4">
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck className="h-5 w-5 text-emerald-500" />
-                  <h3 className="text-base font-bold text-neutral-900 dark:text-white">Security & Cryptographic Access</h3>
+                  <h3 className="text-base font-bold text-neutral-900 dark:text-white">Private Portal Security</h3>
                 </div>
 
                 <div className="space-y-2.5 text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                   <p>
-                    This private client portal is secured with scrypt-salted passwordless tokens and HMAC session authentication. No external account or public directory lookup is required.
+                    This private client portal is protected with encrypted access keys and secure verified sessions. No external accounts or complex sign-ups are required.
                   </p>
                   <div className="p-3 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-[11px] font-mono space-y-1">
-                    <p>Status: Authenticated Client Session</p>
-                    <p>Verified Identity: {bundle.project.clientEmail}</p>
-                    <p>Passcode Version: v{bundle.project.passcodeVersion}</p>
+                    <p>Session: Verified Client Access</p>
+                    <p>Verified Email: {bundle.project.clientEmail}</p>
+                    <p>Access Key Level: Active (v{bundle.project.passcodeVersion})</p>
                   </div>
                 </div>
 
