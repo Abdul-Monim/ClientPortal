@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --surface-canvas: #faf9f6;
+  --surface-panel: #f3f1ec;
+  --surface-card: #ffffff;
+  --border-hairline: #e5e1d8;
+  --ink-primary: #161614;
+  --ink-secondary: #5c5a55;
+  --ink-muted: #84817a;
+
+  --brand-accent: #2f5d50;
+  --brand-accent-fg: #faf9f6;
+  --brand-accent-soft: rgba(47, 93, 80, 0.12);
+  --brand-accent-border: rgba(47, 93, 80, 0.28);
+}
+
+.dark {
+  --surface-canvas: #111211;
+  --surface-panel: #191b19;
+  --surface-card: #1f221f;
+  --border-hairline: #2d302c;
+  --ink-primary: #f5f3ee;
+  --ink-secondary: #b5b2aa;
+  --ink-muted: #85827a;
+}
+
+@layer base {
+  html {
+    background-color: var(--surface-canvas);
+    color: var(--ink-primary);
+    font-family: var(--font-lexend), system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--ink-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.font-editorial {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.font-ui {
+  font-family: var(--font-lexend), system-ui, sans-serif;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.surface-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+}
+
+.surface-panel {
+  background-color: var(--surface-panel);
+  border: 1px solid var(--border-hairline);
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease,
+    opacity 150ms ease;
+}
+
+.pill-btn:active {
+  transform: scale(0.97);
+}
+
+.pill-btn-brand {
+  background-color: var(--brand-accent);
+  color: var(--brand-accent-fg);
+}
+
+.pill-btn-brand:hover {
+  opacity: 0.92;
+}
+
+.pill-btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border-hairline);
+  color: var(--ink-primary);
+}
+
+.pill-btn-outline:hover {
+  background-color: var(--surface-panel);
+}
+
+.field-input {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid var(--border-hairline);
+  background-color: var(--surface-canvas);
+  color: var(--ink-primary);
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px var(--brand-accent-soft);
+}

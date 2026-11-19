@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Testing & coverage
+coverage/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Local sandbox runtime state
+.clientportal-sandbox.json
+
+# OS & editor
+.DS_Store
+Thumbs.db
+*.log
+.vercel/
