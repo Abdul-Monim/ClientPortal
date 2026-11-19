@@ -189,10 +189,31 @@ export class SupabasePortalRepository implements PortalRepository {
 
     const { data, error } = await query;
     if (error) throw new Error(error.message);
-    if (!data) {
-      throw new Error("No studio profile exists yet for this account.");
+    if (data) {
+      return mapStudio(data as Row);
     }
-    return mapStudio(data as Row);
+
+    // Auto-provision initial studio profile for fresh Supabase user
+    if (ownerUserId) {
+      const defaultSlug = `studio-${ownerUserId.slice(0, 8)}`;
+      const { data: created, error: insertErr } = await db
+        .from("studios")
+        .insert({
+          owner_user_id: ownerUserId,
+          slug: defaultSlug,
+          studio_name: "My Studio",
+          accent_hex: "#2F5D50",
+          welcome_message: "Welcome to your client hub. Track milestones, deliverables, and invoices.",
+        })
+        .select("*")
+        .single();
+
+      if (!insertErr && created) {
+        return mapStudio(created as Row);
+      }
+    }
+
+    throw new Error("No studio profile exists yet for this account.");
   }
 
   async getStudioBySlug(slug: string): Promise<Studio | null> {

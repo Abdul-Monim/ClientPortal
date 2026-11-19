@@ -8,6 +8,7 @@ import {
   FolderKanban,
   Globe,
   LayoutDashboard,
+  LogOut,
   Menu,
   Palette,
   Receipt,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { BrandAvatar } from "@/components/ui/BrandAvatar";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useRouter } from "next/navigation";
 
 interface HostySidebarProps {
   studioName: string;
@@ -57,8 +59,23 @@ export function HostySidebar({
   samplePortalPath,
   runtimeMode,
 }: HostySidebarProps) {
+  const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  async function handleLogout() {
+    try {
+      setLoggingOut(true);
+      await fetch("/api/v1/auth/logout", { method: "POST" });
+      router.push("/login");
+      router.refresh();
+    } catch {
+      router.push("/login");
+    } finally {
+      setLoggingOut(false);
+    }
+  }
 
   return (
     <>
@@ -150,8 +167,18 @@ export function HostySidebar({
                 </span>
               </div>
             </div>
-            <div className="shrink-0 pl-1">
+            <div className="flex items-center gap-1 shrink-0 pl-1">
               <ThemeToggle />
+              <button
+                type="button"
+                onClick={handleLogout}
+                disabled={loggingOut}
+                aria-label="Sign out"
+                title="Sign out of studio"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 hover:text-rose-400 hover:bg-neutral-700/80 transition disabled:opacity-50"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+              </button>
             </div>
           </div>
         </div>

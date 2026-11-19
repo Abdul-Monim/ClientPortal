@@ -10,15 +10,39 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [notice, setNotice] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
-      setNotice("Enter your studio email and password, or launch Studio Sandbox below.");
+      setErrorMsg("Please enter both your email address and studio password.");
       return;
     }
-    router.push("/dashboard");
+
+    try {
+      setLoading(true);
+      setErrorMsg(null);
+
+      const res = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setErrorMsg(data.error || "Invalid studio credentials.");
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Network error during sign-in.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -60,6 +84,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@yourstudio.com"
                 className="w-full rounded-full border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/60 pl-11 pr-4 py-3 text-sm text-neutral-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white transition"
+                required
               />
             </div>
           </div>
@@ -76,29 +101,40 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 className="w-full rounded-full border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/60 pl-11 pr-4 py-3 text-sm text-neutral-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white transition"
+                required
               />
             </div>
           </div>
 
-          {notice && (
-            <p className="rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-2.5 text-xs text-amber-800 dark:text-amber-300">
-              {notice}
+          {errorMsg && (
+            <p className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-xs text-rose-700 dark:text-rose-300">
+              {errorMsg}
             </p>
           )}
 
           <button
             type="submit"
-            className="rounded-full w-full py-3.5 text-sm font-semibold bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition flex items-center justify-center gap-2 shadow-sm"
+            disabled={loading}
+            className="rounded-full w-full py-3.5 text-sm font-semibold bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition flex items-center justify-center gap-2 shadow-sm disabled:opacity-50"
           >
-            <span>Sign In to Studio</span>
+            <span>{loading ? "Authenticating..." : "Sign In to Studio"}</span>
             <ArrowRight className="h-4 w-4" />
           </button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-neutral-100 dark:border-neutral-800/80 text-center">
+        <div className="mt-6 pt-6 border-t border-neutral-100 dark:border-neutral-800/80 text-center space-y-3">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            Don&apos;t have a studio account yet?{" "}
+            <Link
+              href="/signup"
+              className="font-semibold text-neutral-900 dark:text-white underline"
+            >
+              Register here
+            </Link>
+          </p>
           <Link
             href="/dashboard"
-            className="rounded-full w-full py-3 text-xs font-semibold border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition flex items-center justify-center gap-2"
+            className="rounded-full w-full py-2.5 text-xs font-semibold border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition flex items-center justify-center gap-2"
           >
             <Sparkles className="h-3.5 w-3.5 text-amber-500" />
             <span>Enter Studio Sandbox Directly</span>

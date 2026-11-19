@@ -24,8 +24,8 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#F3F4F6] p-3 sm:p-6 lg:p-8 font-ui text-neutral-900 selection:bg-neutral-900 selection:text-white dark:bg-[#07090E] dark:text-neutral-100">
-      {/* Outer Editorial Canvas Frame matching the Reference Comp */}
-      <div className="mx-auto max-w-[1340px] rounded-[2.5rem] border border-neutral-200/80 bg-white p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-300 dark:border-neutral-800 dark:bg-[#0C1017]">
+      {/* Outer Editorial Canvas Frame matching the Reference Comp strictly <= 5% side gap */}
+      <div className="w-[95%] max-w-[1760px] mx-auto rounded-[2.5rem] border border-neutral-200/80 bg-white p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-300 dark:border-neutral-800 dark:bg-[#0C1017]">
         {/* ========================================================= */}
         {/* 1. TOP NAVBAR */}
         {/* ========================================================= */}

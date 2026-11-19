@@ -16,6 +16,18 @@ export const slugSchema = z
     "Use lowercase letters, numbers, and single hyphens only."
   );
 
+export const freelancerLoginSchema = z.object({
+  email: z.string().trim().email("Enter a valid studio email address."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
+});
+
+export const freelancerSignupSchema = z.object({
+  email: z.string().trim().email("Enter a valid studio email address."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
+  studioName: z.string().trim().min(2, "Studio or freelance brand name is required.").max(80),
+  studioSlug: slugSchema.optional(),
+});
+
 export const updateStudioSchema = z.object({
   studioName: z.string().trim().min(2, "Studio name is required.").max(80),
   slug: slugSchema,
