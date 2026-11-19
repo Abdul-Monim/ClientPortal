@@ -8,8 +8,9 @@ import {
   Receipt,
   Sparkles,
 } from "lucide-react";
+import { buildStudioAnalytics } from "@/domain/analytics";
 import { calculateProjectProgressPct } from "@/domain/milestones";
-import { formatCurrencyCents, summarizeAccountsReceivable } from "@/domain/money";
+import { HostyAnalyticsView } from "@/components/dashboard/HostyAnalyticsView";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { getPortalRepository } from "@/infrastructure/repositories";
 import { getAuthenticatedFreelancer } from "@/services/auth";
@@ -28,15 +29,14 @@ export default async function DashboardOverviewPage() {
     await Promise.all(projects.map((p) => repo.getProjectBundleById(p.id)))
   ).filter((b): b is NonNullable<typeof b> => Boolean(b));
 
-  const awaitingReviewCount = bundles.reduce(
-    (sum, b) =>
-      sum + b.deliverables.filter((d) => d.status === "in_review").length,
-    0
-  );
-  const ar = summarizeAccountsReceivable(invoices);
+  const analyticsPayload = buildStudioAnalytics({
+    bundles,
+    invoices,
+    activities,
+  });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Header Row */}
       <section className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
@@ -45,7 +45,7 @@ export default async function DashboardOverviewPage() {
             Good day, {studio.studioName}
           </h1>
           <p className="mt-2 text-sm text-[var(--ink-secondary)]">
-            Track active client hubs, pending approvals, and invoice settlements in one view.
+            Live client hub analytics, approval velocities, and project tracking.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5">
@@ -66,45 +66,9 @@ export default async function DashboardOverviewPage() {
         </div>
       </section>
 
-      {/* KPI Bento Strip */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="surface-card rounded-3xl p-6">
-          <p className="eyebrow">Active Portals</p>
-          <p className="mt-3 text-3xl font-semibold tabular-nums">{projects.length}</p>
-          <p className="mt-1 text-xs text-[var(--ink-muted)]">
-            Password-protected client hubs
-          </p>
-        </div>
-
-        <div className="surface-card rounded-3xl p-6">
-          <p className="eyebrow">Awaiting Approval</p>
-          <p className="mt-3 text-3xl font-semibold tabular-nums">
-            {awaitingReviewCount}
-          </p>
-          <p className="mt-1 text-xs text-[var(--ink-muted)]">
-            Deliverables ready for client sign-off
-          </p>
-        </div>
-
-        <div className="surface-card rounded-3xl p-6">
-          <p className="eyebrow">Collected Revenue</p>
-          <p className="mt-3 text-3xl font-semibold tabular-nums text-[var(--brand-accent)]">
-            {formatCurrencyCents(ar.totalPaidCents)}
-          </p>
-          <p className="mt-1 text-xs text-[var(--ink-muted)]">
-            {ar.paidCount} settled invoice(s)
-          </p>
-        </div>
-
-        <div className="surface-card rounded-3xl p-6">
-          <p className="eyebrow">Open Invoices</p>
-          <p className="mt-3 text-3xl font-semibold tabular-nums">
-            {formatCurrencyCents(ar.totalOutstandingCents)}
-          </p>
-          <p className="mt-1 text-xs text-[var(--ink-muted)]">
-            {ar.openCount} awaiting client payment
-          </p>
-        </div>
+      {/* Hosty Analytics Dashboard Recreation */}
+      <section>
+        <HostyAnalyticsView initialData={analyticsPayload} />
       </section>
 
       {/* Main Asymmetric Split */}

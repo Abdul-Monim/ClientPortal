@@ -1,24 +1,19 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  CheckCircle2,
+  Check,
   ExternalLink,
-  FileText,
-  Layers,
+  FileCheck2,
   Lock,
-  Palette,
   Receipt,
-  ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { getRuntimeMode } from "@/infrastructure/config/env";
 import { getPortalRepository } from "@/infrastructure/repositories";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const mode = getRuntimeMode();
   const repo = getPortalRepository();
   const studio = await repo.getStudioForOwner();
   const projects = await repo.listProjects(studio.id);
@@ -28,230 +23,380 @@ export default async function HomePage() {
     : "/dashboard";
 
   return (
-    <div className="min-h-screen bg-[var(--surface-canvas)] text-[var(--ink-primary)]">
-      {/* Floating Material You Capsule Header */}
-      <header className="sticky top-4 z-40 mx-auto max-w-6xl px-4">
-        <div className="surface-card flex items-center justify-between rounded-full px-5 py-2.5 shadow-sm backdrop-blur">
-          <Link href="/" className="flex items-center gap-3">
-            <span
-              className="flex h-9 w-9 items-center justify-center rounded-full font-editorial text-base font-semibold"
-              style={{
-                backgroundColor: "var(--brand-accent)",
-                color: "var(--brand-accent-fg)",
-              }}
-            >
-              CP
-            </span>
-            <span className="font-editorial text-2xl font-semibold tracking-tight">
-              ClientPortal
+    <div className="min-h-screen bg-[#F3F4F6] p-3 sm:p-6 lg:p-8 font-ui text-neutral-900 selection:bg-neutral-900 selection:text-white dark:bg-[#07090E] dark:text-neutral-100">
+      {/* Outer Editorial Canvas Frame matching the Reference Comp */}
+      <div className="mx-auto max-w-[1340px] rounded-[2.5rem] border border-neutral-200/80 bg-white p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-300 dark:border-neutral-800 dark:bg-[#0C1017]">
+        {/* ========================================================= */}
+        {/* 1. TOP NAVBAR */}
+        {/* ========================================================= */}
+        <header className="flex items-center justify-between pb-8 sm:pb-12 border-b border-neutral-100 dark:border-neutral-800/80">
+          {/* Logo Mark + Brand Title */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-900 transition-transform group-hover:scale-105">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+              </svg>
+            </div>
+            <span className="font-editorial text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+              FreelanceOS
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
+          {/* Navigation Links */}
+          <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-600 dark:text-neutral-300 md:flex">
             <Link
-              href="#capabilities"
-              className="pill-btn px-4 py-2 text-sm text-[var(--ink-secondary)] hover:bg-[var(--surface-panel)] hover:text-[var(--ink-primary)]"
+              href="#about"
+              className="hover:text-neutral-950 dark:hover:text-white transition"
             >
-              Capabilities
+              About
+            </Link>
+            <Link
+              href="#features"
+              className="hover:text-neutral-950 dark:hover:text-white transition"
+            >
+              Feature
+            </Link>
+            <Link
+              href="#pricing"
+              className="hover:text-neutral-950 dark:hover:text-white transition"
+            >
+              Pricing
             </Link>
             <Link
               href={samplePortalHref}
-              className="pill-btn px-4 py-2 text-sm text-[var(--ink-secondary)] hover:bg-[var(--surface-panel)] hover:text-[var(--ink-primary)]"
+              className="hover:text-neutral-950 dark:hover:text-white transition"
             >
-              Live Client Hub
-            </Link>
-            <Link
-              href="/dashboard"
-              className="pill-btn px-4 py-2 text-sm text-[var(--ink-secondary)] hover:bg-[var(--surface-panel)] hover:text-[var(--ink-primary)]"
-            >
-              Studio Workbench
+              Live Demo
             </Link>
           </nav>
 
-          <div className="flex items-center gap-2">
+          {/* Action Row */}
+          <div className="flex items-center gap-3">
             <ThemeToggle />
             <Link
               href="/dashboard"
-              className="pill-btn pill-btn-brand px-5 py-2.5 text-sm"
+              className="rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition flex items-center gap-2"
             >
-              <span>Open Studio</span>
+              <span>Get started</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="mx-auto max-w-6xl px-4 pb-24 pt-14 md:pt-20">
-        {/* Editorial Hero */}
-        <section className="grid items-center gap-12 lg:grid-cols-12">
-          <div className="space-y-7 lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-hairline)] bg-[var(--surface-panel)] px-4 py-1.5 text-xs font-medium text-[var(--ink-secondary)]">
-              <Sparkles className="h-3.5 w-3.5 text-[var(--brand-accent)]" />
-              <span className="tracking-[0.14em] uppercase">
-                White-Label Freelance Operations
-              </span>
-            </div>
-
-            <h1 className="font-editorial text-5xl font-medium leading-[1.06] tracking-tight sm:text-6xl lg:text-7xl">
-              Replace messy email chains with a calm, branded client hub.
+        {/* ========================================================= */}
+        {/* 2. HERO TWO-COLUMN SPLIT */}
+        {/* ========================================================= */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 py-10 sm:py-16 items-center">
+          {/* Left Column: Editorial Copy */}
+          <div className="lg:col-span-6 space-y-6 sm:space-y-8">
+            <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-neutral-950 dark:text-white leading-[1.08]">
+              App To Work Your Way,
+              <br />
+              Across Time And Space
             </h1>
 
-            <p className="max-w-xl text-base leading-relaxed text-[var(--ink-secondary)] sm:text-lg">
-              Give every client their own password-protected portal under your studio name
-              and brand color. Share live milestone progress, versioned deliverables,
-              formal approvals, and downloadable invoices in one composed space.
+            <p className="text-base sm:text-lg text-neutral-500 dark:text-neutral-400 max-w-lg leading-relaxed">
+              A flexible workspace that lets you manage clients, projects, and workflows
+              from any moment in time and any place you choose.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* CTA Group with Pill Button & Guarantee Badge */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Link
                 href="/dashboard"
-                className="pill-btn pill-btn-brand px-6 py-3.5 text-sm"
+                className="rounded-full bg-neutral-950 px-8 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition flex items-center gap-2.5"
               >
-                <Layers className="h-4 w-4" />
-                <span>Launch Studio Workbench</span>
+                <span>Get started</span>
+                <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link
-                href={samplePortalHref}
-                className="pill-btn pill-btn-outline px-6 py-3.5 text-sm"
-              >
-                <ExternalLink className="h-4 w-4" />
-                <span>Preview Client Portal</span>
-              </Link>
-            </div>
 
-            <div className="flex flex-wrap items-center gap-6 pt-3 text-xs text-[var(--ink-muted)]">
-              <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[var(--brand-accent)]" />
-                <span>Password-protected portals</span>
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Receipt className="h-4 w-4 text-[var(--brand-accent)]" />
-                <span>Stripe + branded PDF invoices</span>
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Palette className="h-4 w-4 text-[var(--brand-accent)]" />
-                <span>Custom domain ready</span>
-              </span>
+              <div className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300 font-medium">
+                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
+                <span>14 days free trial</span>
+              </div>
             </div>
           </div>
 
-          {/* Live Portal Preview Card */}
-          <div className="lg:col-span-5">
-            <div className="surface-card rounded-[2rem] p-7 shadow-sm">
-              <div className="flex items-center justify-between border-b border-[var(--border-hairline)] pb-5">
-                <div>
-                  <p className="eyebrow">Live White-Label Demo</p>
-                  <h2 className="mt-1 font-editorial text-3xl font-semibold">
-                    {studio.studioName}
-                  </h2>
-                </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--brand-accent-border)] bg-[var(--brand-accent-soft)] px-3.5 py-1.5 text-xs font-medium text-[var(--brand-accent)]">
-                  <Lock className="h-3.5 w-3.5" />
-                  <span>Protected</span>
-                </span>
+          {/* Right Column: Hero Cosmic Prismatic Visual */}
+          <div className="lg:col-span-6">
+            <div className="relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-[#06070B] shadow-2xl aspect-square sm:aspect-[4/3] lg:aspect-square flex items-center justify-center group">
+              <Image
+                src="/hero-cosmic.jpg"
+                alt="Astronaut floating weightlessly in deep cosmic space on iridescent liquid glass"
+                fill
+                priority
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+              {/* Subtle Ambient Radial Light Gradient */}
+              <div className="pointer-events-none absolute inset-0 bg-radial from-transparent via-transparent to-black/40" />
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 3. LOGO / TRUSTED BY ROW */}
+        {/* ========================================================= */}
+        <section className="pt-8 sm:pt-12 pb-6 border-t border-neutral-100 dark:border-neutral-800/80">
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 font-medium mb-6">
+            Trusted by freelancers and teams who work anywhere
+          </p>
+
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-6 sm:gap-8 items-center text-neutral-400 dark:text-neutral-600">
+            {/* 8 Clean Geometric Vector Marks */}
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="9" fillOpacity="0.2" />
+                <path d="M12 3a9 9 0 0 0 0 18v-18z" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l2.4 7.6H22l-6.2 4.5 2.4 7.6-6.2-4.5-6.2 4.5 2.4-7.6-6.2-4.5h7.6z" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="4" y="4" width="6" height="6" rx="2" />
+                <rect x="14" y="4" width="6" height="6" rx="2" />
+                <rect x="4" y="14" width="6" height="6" rx="2" />
+                <rect x="14" y="14" width="6" height="6" rx="2" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="6" cy="6" r="3" />
+                <circle cx="18" cy="6" r="3" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="18" r="3" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="currentColor" strokeWidth="2" fill="none" />
+                <circle cx="12" cy="12" r="2" fill="currentColor" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" />
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 4. CORE FEATURES & CAPABILITIES */}
+        {/* ========================================================= */}
+        <section id="features" className="py-16 sm:py-20 border-t border-neutral-100 dark:border-neutral-800/80">
+          <div className="max-w-2xl">
+            <span className="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400">
+              Calm Collaboration
+            </span>
+            <h2 className="mt-2 font-editorial text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+              Everything your clients need, zero messy email chains.
+            </h2>
+            <p className="mt-3 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
+              Give each client a dedicated link protected by a simple passcode. They see milestones,
+              review deliverables, leave approvals, and pay invoices with one click.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Feature 1 */}
+            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/50 p-8 dark:border-neutral-800 dark:bg-[#10141D] transition hover:shadow-lg">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">
+                <Lock className="h-4 w-4" />
               </div>
+              <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
+                Passcode Gate & Zero Sign-Up
+              </h3>
+              <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Clients enter a simple password. No account creation, no password resets, no friction.
+                Secured by salted scrypt hashes and HMAC cookies.
+              </p>
+            </div>
 
-              <div className="mt-6 space-y-4">
-                <div className="rounded-2xl bg-[var(--surface-panel)] p-4">
-                  <p className="text-xs text-[var(--ink-muted)]">Active Client Portal</p>
-                  <p className="mt-1 font-medium">
-                    {featuredProject?.title ?? "Meridian Brand Identity & Marketing Site"}
-                  </p>
-                  <p className="mt-1 text-xs text-[var(--ink-secondary)]">
-                    Client: {featuredProject?.clientCompany ?? "Meridian Climate Labs"}
-                  </p>
-                </div>
+            {/* Feature 2 */}
+            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/50 p-8 dark:border-neutral-800 dark:bg-[#10141D] transition hover:shadow-lg">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">
+                <FileCheck2 className="h-4 w-4" />
+              </div>
+              <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
+                Deliverables & Version Revisions
+              </h3>
+              <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Present Figma designs, Loom videos, PDFs, and staging links. Clients switch between
+                v1 and v2, leave timestamped comments, and sign off formally.
+              </p>
+            </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl border border-[var(--border-hairline)] p-4">
-                    <p className="text-xs text-[var(--ink-muted)]">Portal URL</p>
-                    <p className="mt-1 truncate text-xs font-medium">
-                      /p/{studio.slug}/{featuredProject?.slug ?? "meridian-rebrand"}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-[var(--border-hairline)] p-4">
-                    <p className="text-xs text-[var(--ink-muted)]">Demo Password</p>
-                    <p className="mt-1 font-mono text-xs font-semibold">meridian2026</p>
-                  </div>
-                </div>
+            {/* Feature 3 */}
+            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/50 p-8 dark:border-neutral-800 dark:bg-[#10141D] transition hover:shadow-lg">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">
+                <Receipt className="h-4 w-4" />
+              </div>
+              <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
+                Hybrid Stripe & Branded PDF
+              </h3>
+              <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Connect Stripe for direct online card settlements, or let clients download pure-JS
+                white-labeled PDF invoices generated in integer cents.
+              </p>
+            </div>
+          </div>
+        </section>
 
-                <div className="flex items-center justify-between pt-2">
-                  <span className="text-xs text-[var(--ink-muted)]">
-                    Runtime: {mode === "cloud" ? "Live Supabase Cloud" : "Interactive Studio Sandbox"}
+        {/* ========================================================= */}
+        {/* 5. PRICING SECTION */}
+        {/* ========================================================= */}
+        <section id="pricing" className="py-16 sm:py-20 border-t border-neutral-100 dark:border-neutral-800/80">
+          <div className="text-center max-w-xl mx-auto">
+            <span className="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400">
+              Simple Pricing
+            </span>
+            <h2 className="mt-2 font-editorial text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+              Start free, ascend as your client roster grows.
+            </h2>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8">
+            {/* Free Starter */}
+            <div className="rounded-3xl border border-neutral-200/80 bg-white p-8 dark:border-neutral-800 dark:bg-[#10141D] flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+                  Solo Freelancer
+                </span>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="text-4xl font-bold tracking-tight text-neutral-950 dark:text-white">
+                    $0
                   </span>
-                  <Link
-                    href={samplePortalHref}
-                    className="pill-btn pill-btn-brand px-4 py-2 text-xs"
-                  >
-                    <span>Try Client View</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                  <span className="text-sm text-neutral-500">/ forever</span>
                 </div>
+                <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400">
+                  Perfect for independent freelancers testing client hubs.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-neutral-700 dark:text-neutral-300">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-500" />
+                    <span>Up to 3 active client portals</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-500" />
+                    <span>Unlimited milestones & deliverables</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-500" />
+                    <span>Native PDF invoice generator</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 pt-6 border-t border-neutral-100 dark:border-neutral-800">
+                <Link
+                  href="/dashboard"
+                  className="rounded-full w-full py-3 text-sm font-semibold border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition flex items-center justify-center gap-2"
+                >
+                  <span>Use Free Version</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Pro Studio */}
+            <div className="rounded-3xl border-2 border-neutral-900 bg-neutral-900 p-8 text-white dark:border-white dark:bg-[#141B28] flex flex-col justify-between shadow-xl">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+                    Pro Studio
+                  </span>
+                  <span className="rounded-full bg-white/20 px-3 py-1 text-[11px] font-semibold text-white">
+                    Recommended
+                  </span>
+                </div>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="text-4xl font-bold tracking-tight text-white">
+                    $19
+                  </span>
+                  <span className="text-sm text-neutral-400">/ month</span>
+                </div>
+                <p className="mt-3 text-sm text-neutral-300">
+                  Custom domain, unlimited client portals, and Stripe invoicing.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-neutral-200">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-400" />
+                    <span>Unlimited client portals & archives</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-400" />
+                    <span>Custom domain (client.yourname.com)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-400" />
+                    <span>Direct Stripe card settlements</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-emerald-400" />
+                    <span>Hosty-grade analytics & velocity charts</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8 pt-6 border-t border-neutral-800">
+                <Link
+                  href="/dashboard"
+                  className="rounded-full w-full py-3 text-sm font-semibold bg-white text-neutral-950 hover:bg-neutral-200 transition flex items-center justify-center gap-2"
+                >
+                  <span>Launch Pro Studio</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Flat Bento Capabilities Section */}
-        <section id="capabilities" className="mt-24 space-y-8">
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="eyebrow">Built for Independent Studios</p>
-              <h2 className="mt-2 font-editorial text-4xl font-medium tracking-tight">
-                Everything a client needs. Nothing to lose in email.
-              </h2>
-            </div>
-            <Link
-              href="/dashboard/branding"
-              className="pill-btn pill-btn-outline self-start px-5 py-2.5 text-sm"
-            >
-              <Palette className="h-4 w-4" />
-              <span>Explore White-Label Studio</span>
+        {/* ========================================================= */}
+        {/* 6. EDITORIAL FOOTER */}
+        {/* ========================================================= */}
+        <footer className="pt-10 border-t border-neutral-100 dark:border-neutral-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-neutral-900 dark:text-white">ClientPortal</span>
+            <span>&bull;</span>
+            <span>M. Abdul Monim</span>
+            <span>&bull;</span>
+            <span>Independent White-Label SaaS Platform</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="hover:text-neutral-900 dark:hover:text-white transition">
+              Dashboard
+            </Link>
+            <Link href={samplePortalHref} className="hover:text-neutral-900 dark:hover:text-white transition">
+              Sample Hub
+            </Link>
+            <Link href="https://github.com/Abdul-Monim/ClientPortal" target="_blank" className="hover:text-neutral-900 dark:hover:text-white transition flex items-center gap-1">
+              <span>GitHub</span>
+              <ExternalLink className="h-3 w-3" />
             </Link>
           </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            <article className="surface-card rounded-3xl p-7">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--brand-accent-soft)] text-[var(--brand-accent)]">
-                <CheckCircle2 className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-editorial text-2xl font-semibold">
-                Live Milestone Clarity
-              </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-[var(--ink-secondary)]">
-                Assign percentage weights to every phase so clients always see exact
-                project progress without asking for status updates.
-              </p>
-            </article>
-
-            <article className="surface-card rounded-3xl p-7">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--brand-accent-soft)] text-[var(--brand-accent)]">
-                <FileText className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-editorial text-2xl font-semibold">
-                Versioned Deliverables & Sign-Off
-              </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-[var(--ink-secondary)]">
-                Pair Cloudinary file uploads with Figma, Vercel, and Loom links. Track v1
-                to v2 revisions and lock formal approvals with timestamped sign-off records.
-              </p>
-            </article>
-
-            <article className="surface-card rounded-3xl p-7">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--brand-accent-soft)] text-[var(--brand-accent)]">
-                <Receipt className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-editorial text-2xl font-semibold">
-                Branded Invoices & Stripe Sync
-              </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-[var(--ink-secondary)]">
-                Issue exact itemized invoices synced with Stripe Invoicing or settle offline,
-                with instant white-labeled PDF downloads tailored to your studio palette.
-              </p>
-            </article>
-          </div>
-        </section>
-      </main>
+        </footer>
+      </div>
     </div>
   );
 }
