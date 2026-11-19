@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Activity,
   AlertTriangle,
@@ -239,11 +240,17 @@ export function HostyAnalyticsView({ initialData, studioName }: HostyAnalyticsVi
           </div>
 
           {/* ===================================================================== */}
-          {/* 4 PASTEL KPI CARDS ROW                                                */}
+          {/* 4 PASTEL KPI CARDS ROW WITH MOTION LIFT                              */}
           {/* ===================================================================== */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {/* Card 1: Pastel Sky Blue */}
-            <div className="rounded-2xl bg-[#DDF0F8] p-5 text-[#133E53] shadow-xs transition hover:shadow-md dark:bg-[#132A3E] dark:text-[#BAE6FD]">
+            <motion.div
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.05 }}
+              className="rounded-2xl bg-[#DDF0F8] p-5 text-[#133E53] shadow-xs transition hover:shadow-md dark:bg-[#132A3E] dark:text-[#BAE6FD]"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-200/70 text-[#133E53] dark:bg-sky-800/50 dark:text-sky-200">
                   <Layers className="h-4 w-4" />
@@ -257,10 +264,16 @@ export function HostyAnalyticsView({ initialData, studioName }: HostyAnalyticsVi
               <div className="mt-1 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
                 Redirects
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 2: Pastel Lime Green */}
-            <div className="rounded-2xl bg-[#E6F7D8] p-5 text-[#1F4E24] shadow-xs transition hover:shadow-md dark:bg-[#1A3320] dark:text-[#BBF7D0]">
+            <motion.div
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.1 }}
+              className="rounded-2xl bg-[#E6F7D8] p-5 text-[#1F4E24] shadow-xs transition hover:shadow-md dark:bg-[#1A3320] dark:text-[#BBF7D0]"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-200/70 text-[#1F4E24] dark:bg-emerald-800/50 dark:text-emerald-200">
                   <CheckCircle2 className="h-4 w-4" />
@@ -274,10 +287,16 @@ export function HostyAnalyticsView({ initialData, studioName }: HostyAnalyticsVi
               <div className="mt-1 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
                 Success rate
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 3: Pastel Peach / Apricot */}
-            <div className="rounded-2xl bg-[#FED7AA] p-5 text-[#7C2D12] shadow-xs transition hover:shadow-md dark:bg-[#3D2516] dark:text-[#FED7AA]">
+            <motion.div
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.15 }}
+              className="rounded-2xl bg-[#FED7AA] p-5 text-[#7C2D12] shadow-xs transition hover:shadow-md dark:bg-[#3D2516] dark:text-[#FED7AA]"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-300/70 text-[#7C2D12] dark:bg-amber-800/50 dark:text-amber-200">
                   <AlertTriangle className="h-4 w-4" />
@@ -291,10 +310,16 @@ export function HostyAnalyticsView({ initialData, studioName }: HostyAnalyticsVi
               <div className="mt-1 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
                 Errors
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 4: Dark Slate / Neutral Slate */}
-            <div className="rounded-2xl bg-[#2B3037] p-5 text-neutral-100 shadow-xs transition hover:shadow-md ring-1 ring-neutral-700/60 dark:bg-[#18202F] dark:text-neutral-100">
+            <motion.div
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.2 }}
+              className="rounded-2xl bg-[#2B3037] p-5 text-neutral-100 shadow-xs transition hover:shadow-md ring-1 ring-neutral-700/60 dark:bg-[#18202F] dark:text-neutral-100"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-700/80 text-neutral-200">
                   <Activity className="h-4 w-4" />
@@ -308,7 +333,7 @@ export function HostyAnalyticsView({ initialData, studioName }: HostyAnalyticsVi
               <div className="mt-1 text-xs font-semibold text-neutral-300">
                 Error ratio
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* ===================================================================== */}

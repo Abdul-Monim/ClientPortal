@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Cormorant_Garamond, Lexend } from "next/font/google";
+import { LoadingBar } from "@/components/ui/LoadingBar";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -34,6 +36,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-ui antialiased selection:bg-[var(--brand-accent-soft)]">
+        <Suspense fallback={null}>
+          <LoadingBar />
+        </Suspense>
         {children}
       </body>
     </html>

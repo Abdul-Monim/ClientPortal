@@ -119,3 +119,16 @@
   border-color: var(--brand-accent);
   box-shadow: 0 0 0 3px var(--brand-accent-soft);
 }
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s infinite linear;
+}

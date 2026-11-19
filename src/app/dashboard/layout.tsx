@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { buildBrandThemeTokens } from "@/domain/theme";
 import { HostySidebar } from "@/components/dashboard/HostySidebar";
+import { PageTransition } from "@/components/ui/PageTransition";
 import { getRuntimeMode } from "@/infrastructure/config/env";
 import { getPortalRepository } from "@/infrastructure/repositories";
 import { getAuthenticatedFreelancer } from "@/services/auth";
@@ -47,7 +48,9 @@ export default async function DashboardLayout({
             samplePortalPath={samplePortalPath}
             runtimeMode={getRuntimeMode()}
           />
-          <main className="w-full flex-1 min-w-0 pb-16">{children}</main>
+          <main className="w-full flex-1 min-w-0 pb-16">
+            <PageTransition>{children}</PageTransition>
+          </main>
         </div>
       </div>
     </div>
