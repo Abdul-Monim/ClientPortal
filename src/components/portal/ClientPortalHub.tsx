@@ -172,10 +172,10 @@ export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--surface-canvas)] text-[var(--ink-primary)] pb-24">
-      {/* Branded Floating Capsule Header */}
-      <header className="sticky top-4 z-40 mx-auto max-w-6xl px-4">
-        <div className="surface-card flex flex-wrap items-center justify-between gap-3 rounded-full px-4 py-2.5 shadow-sm backdrop-blur">
+    <div className="min-h-screen bg-[#F3F4F6] text-neutral-900 dark:bg-[#070A0F] dark:text-neutral-100 pb-24 transition-colors duration-200">
+      {/* Branded Floating Capsule Header with <= 5% side margins */}
+      <header className="sticky top-4 z-40 w-[95%] max-w-[1740px] mx-auto px-2 sm:px-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-full bg-[#0A0E17] text-white px-5 py-3 shadow-xl border border-neutral-800">
           <div className="flex items-center gap-3 pl-1">
             <BrandAvatar
               studioName={bundle.studio.studioName}
@@ -183,11 +183,11 @@ export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
               size="sm"
             />
             <div className="leading-tight">
-              <p className="font-editorial text-xl font-semibold">
+              <p className="font-editorial text-xl font-bold tracking-tight text-white">
                 {bundle.studio.studioName}
               </p>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--ink-muted)]">
-                {bundle.project.clientCompany} Hub
+              <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">
+                {bundle.project.clientCompany} Client Hub
               </p>
             </div>
           </div>
@@ -195,7 +195,7 @@ export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
           <div className="flex items-center gap-2">
             <a
               href={`mailto:${bundle.studio.contactEmail}`}
-              className="pill-btn pill-btn-outline hidden px-4 py-2 text-xs sm:inline-flex"
+              className="hidden sm:inline-flex rounded-full bg-neutral-800/80 px-4 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-800 hover:text-white transition ring-1 ring-neutral-700/60 items-center gap-2"
             >
               <Mail className="h-3.5 w-3.5" />
               <span>Contact Studio</span>
@@ -204,7 +204,7 @@ export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
             <button
               type="button"
               onClick={handleSignOut}
-              className="pill-btn pill-btn-outline px-4 py-2 text-xs"
+              className="rounded-full bg-neutral-800 px-4 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-700 hover:text-white transition flex items-center gap-1.5"
             >
               <LogOut className="h-3.5 w-3.5" />
               <span>Lock Portal</span>
@@ -213,51 +213,79 @@ export function ClientPortalHub({ bundle }: { bundle: ProjectBundle }) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl space-y-8 px-4 pt-8">
-        {/* Hero Overview Band */}
-        <section className="surface-card flex flex-col justify-between gap-8 rounded-[2rem] p-7 sm:p-9 lg:flex-row lg:items-center">
+      <main className="w-[95%] max-w-[1740px] mx-auto space-y-8 px-2 sm:px-4 pt-8">
+        {/* Hero Overview Band matching Hosty / FreelanceOS rounded outer frame */}
+        <section className="flex flex-col justify-between gap-8 rounded-[2.5rem] border border-neutral-200/80 bg-white p-7 sm:p-10 shadow-xl lg:flex-row lg:items-center dark:border-neutral-800 dark:bg-[#0E131F]">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2.5">
               <StatusPill status={bundle.project.status} />
               {bundle.project.targetLaunchDate && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-hairline)] bg-[var(--surface-panel)] px-3 py-1 text-xs text-[var(--ink-secondary)]">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 px-3.5 py-1 text-xs font-medium text-neutral-600 dark:text-neutral-300">
                   <Calendar className="h-3.5 w-3.5" />
                   <span>Target Launch: {bundle.project.targetLaunchDate}</span>
                 </span>
               )}
             </div>
 
-            <h1 className="font-editorial text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="font-editorial text-4xl sm:text-5xl font-semibold tracking-tight text-neutral-900 dark:text-white">
               {bundle.project.title}
             </h1>
-            <p className="max-w-2xl text-sm leading-relaxed text-[var(--ink-secondary)]">
+            <p className="max-w-2xl text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
               {bundle.project.summary || bundle.studio.welcomeMessage}
             </p>
 
-            <div className="flex flex-wrap items-center gap-5 pt-2 text-xs text-[var(--ink-secondary)]">
-              <span className="tabular-nums">
-                <strong className="text-[var(--ink-primary)]">
+            <div className="flex flex-wrap items-center gap-5 pt-2 text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+              <span>
+                <strong className="text-neutral-900 dark:text-white">
                   {milestoneCount.completed}/{milestoneCount.total}
                 </strong>{" "}
                 milestones approved
               </span>
-              <span className="tabular-nums">
-                <strong className="text-[var(--ink-primary)]">{pendingReviewCount}</strong>{" "}
-                deliverable(s) awaiting your review
+              <span>
+                <strong className="text-neutral-900 dark:text-white">{pendingReviewCount}</strong>{" "}
+                deliverables awaiting review
               </span>
-              <span className="tabular-nums">
-                <strong className="text-[var(--ink-primary)]">{openInvoicesCount}</strong>{" "}
-                open invoice(s)
+              <span>
+                <strong className="text-neutral-900 dark:text-white">{openInvoicesCount}</strong>{" "}
+                open invoices
               </span>
             </div>
           </div>
 
-          <ProgressRing percentage={progressPct} size={124} strokeWidth={9} />
+          <div className="shrink-0 flex items-center justify-center p-2 rounded-3xl bg-neutral-50 dark:bg-neutral-800/40 ring-1 ring-neutral-200/60 dark:ring-neutral-800">
+            <ProgressRing percentage={progressPct} size={124} strokeWidth={9} />
+          </div>
+        </section>
+
+        {/* 4 Pastel Summary Cards in Client Hub */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="rounded-2xl bg-[#DDF0F8] p-5 text-[#133E53] shadow-xs dark:bg-[#162738] dark:text-[#BAE6FD]">
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Progress</div>
+            <div className="mt-2 text-3xl font-bold">{progressPct}%</div>
+            <div className="mt-1 text-xs opacity-80">Milestone completion</div>
+          </div>
+          <div className="rounded-2xl bg-[#E6F7D8] p-5 text-[#1F4E24] shadow-xs dark:bg-[#1A3320] dark:text-[#BBF7D0]">
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Approved</div>
+            <div className="mt-2 text-3xl font-bold">
+              {bundle.deliverables.filter((d) => d.status === "approved").length}
+            </div>
+            <div className="mt-1 text-xs opacity-80">Deliverables signed off</div>
+          </div>
+          <div className="rounded-2xl bg-[#FED7AA] p-5 text-[#7C2D12] shadow-xs dark:bg-[#3D2516] dark:text-[#FED7AA]">
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Review Ready</div>
+            <div className="mt-2 text-3xl font-bold">{pendingReviewCount}</div>
+            <div className="mt-1 text-xs opacity-80">Awaiting your approval</div>
+          </div>
+          <div className="rounded-2xl bg-neutral-800/90 p-5 text-neutral-200 shadow-xs dark:bg-[#1A202C] dark:text-neutral-100 ring-1 ring-neutral-700/60">
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Invoices</div>
+            <div className="mt-2 text-3xl font-bold">{bundle.invoices.length}</div>
+            <div className="mt-1 text-xs opacity-80">Linked invoice receipts</div>
+          </div>
         </section>
 
         {banner && (
           <div
-            className={`rounded-3xl border px-5 py-3.5 text-xs font-medium ${
+            className={`rounded-2xl border px-5 py-3.5 text-xs font-medium ${
               banner.ok
                 ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
                 : "border-rose-500/25 bg-rose-500/10 text-rose-700 dark:text-rose-300"

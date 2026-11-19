@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 import { buildBrandThemeTokens } from "@/domain/theme";
-
-export const dynamic = "force-dynamic";
-import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { HostySidebar } from "@/components/dashboard/HostySidebar";
 import { getRuntimeMode } from "@/infrastructure/config/env";
 import { getPortalRepository } from "@/infrastructure/repositories";
 import { getAuthenticatedFreelancer } from "@/services/auth";
+
+export const dynamic = "force-dynamic";
 
 export default async function DashboardLayout({
   children,
@@ -28,7 +28,7 @@ export default async function DashboardLayout({
 
   return (
     <div
-      className="min-h-screen bg-[var(--surface-canvas)] text-[var(--ink-primary)] pb-20"
+      className="min-h-screen bg-[#F3F4F6] text-neutral-900 dark:bg-[#070A0F] dark:text-neutral-100 transition-colors duration-200"
       style={
         {
           "--brand-accent": tokens.accentHex,
@@ -38,13 +38,18 @@ export default async function DashboardLayout({
         } as React.CSSProperties
       }
     >
-      <DashboardNav
-        studioName={studio.studioName}
-        logoUrl={studio.logoUrl}
-        samplePortalPath={samplePortalPath}
-        runtimeMode={getRuntimeMode()}
-      />
-      <main className="mx-auto max-w-6xl px-4 pt-8">{children}</main>
+      {/* 95% Viewport Width Container strictly enforcing <= 5% total side margin */}
+      <div className="w-[95%] max-w-[1760px] mx-auto py-3 sm:py-5">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          <HostySidebar
+            studioName={studio.studioName}
+            logoUrl={studio.logoUrl}
+            samplePortalPath={samplePortalPath}
+            runtimeMode={getRuntimeMode()}
+          />
+          <main className="w-full flex-1 min-w-0 pb-16">{children}</main>
+        </div>
+      </div>
     </div>
   );
 }
