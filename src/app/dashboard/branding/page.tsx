@@ -11,7 +11,7 @@ export default async function BrandingPage() {
     <div className="space-y-8">
       <div>
         <p className="eyebrow">White-Label Experience</p>
-        <h1 className="mt-1 font-editorial text-4xl font-semibold sm:text-5xl">
+        <h1 className="mt-1 font-ui text-3xl font-bold sm:text-4xl tracking-tight">
           Branding & Custom Domain
         </h1>
         <p className="mt-2 text-sm text-[var(--ink-secondary)]">

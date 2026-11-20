@@ -61,7 +61,7 @@ export function BrandingStudio({ studio }: { studio: Studio }) {
       >
         <div>
           <p className="eyebrow">White-Label Configuration</p>
-          <h2 className="mt-1 font-editorial text-3xl font-semibold">
+          <h2 className="mt-1 font-ui text-2xl font-bold tracking-tight">
             Studio Identity & Domain
           </h2>
         </div>
@@ -275,7 +275,7 @@ export function BrandingStudio({ studio }: { studio: Studio }) {
             <div className="flex items-center gap-3">
               <BrandAvatar studioName={studioName} logoUrl={logoUrl || null} size="md" />
               <div>
-                <h3 className="font-editorial text-2xl font-semibold">{studioName}</h3>
+                <h3 className="font-ui text-xl font-bold tracking-tight">{studioName}</h3>
                 <p className="text-xs text-[var(--ink-muted)]">
                   {customDomain || `clientportal.app/p/${slug}`}
                 </p>

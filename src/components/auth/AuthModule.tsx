@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   Eye,
   EyeOff,
-  Globe,
   Lock,
   Mail,
   ShieldCheck,
@@ -22,6 +21,7 @@ import {
 } from "lucide-react";
 import { CircularLoader } from "@/components/ui/CircularLoader";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { freelancerLoginSchema, freelancerSignupSchema } from "@/domain/schemas";
 
 interface AuthModuleProps {
@@ -71,6 +71,29 @@ export function AuthModule({ initialMode = "login" }: AuthModuleProps) {
   const isPasswordValid = password.length >= 6;
   const isStudioNameValid = studioName.trim().length >= 2;
   const passwordStrength = calculatePasswordStrength(password);
+
+  async function handleFastTrackDevLogin() {
+    try {
+      setLoading(true);
+      setErrorMsg(null);
+      const res = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: "dev@clientportal.local", password: "developer123" }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setErrorMsg(data.error || "Dev login failed.");
+        return;
+      }
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Dev fast-track login error.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -182,12 +205,12 @@ export function AuthModule({ initialMode = "login" }: AuthModuleProps) {
                 <span>Home</span>
               </Link>
 
-              <Link href="/" className="flex items-center gap-2 group">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-bold text-xs shadow-xs">
-                  <Globe className="h-4 w-4 text-sky-400" />
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-xs">
+                  <BrandLogo size={20} variant="adaptive" className="text-white dark:text-neutral-900" />
                 </div>
-                <span className="font-editorial text-xl font-bold tracking-tight">
-                  FreelanceOS.
+                <span className="font-ui text-xl font-bold tracking-tight text-neutral-900 dark:text-white">
+                  ClientPortal
                 </span>
               </Link>
 
@@ -232,15 +255,53 @@ export function AuthModule({ initialMode = "login" }: AuthModuleProps) {
 
             {/* Title & Eyebrow */}
             <div className="mt-6 text-center space-y-1.5">
-              <h1 className="font-editorial text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
-                {mode === "login" ? "Welcome Back to Studio" : "Launch Your White-Label Hub"}
+              <h1 className="font-ui text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">
+                {mode === "login" ? "Sign in to Studio" : "Launch Your Client Hub"}
               </h1>
               <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-sm mx-auto">
                 {mode === "login"
-                  ? "Access client approval pipelines, milestone telemetry, and branded billing."
-                  : "Give your clients a peaceful, password-protected hub for deliverables and invoices."}
+                  ? "Access client approval pipelines, milestone progress, and branded invoices."
+                  : "Give your clients a calm, password-protected hub for deliverables and invoices."}
               </p>
             </div>
+
+            {/* Dev Fast-Track Card (Shown on Login Mode) */}
+            {mode === "login" && !confirmationNotice && (
+              <div className="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-amber-500" />
+                    <span className="text-xs font-bold text-amber-900 dark:text-amber-200">
+                      Dev & Debugging Fast-Track
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">
+                    Local Demo
+                  </span>
+                </div>
+                <p className="text-[11px] text-amber-900/80 dark:text-amber-200/80 leading-relaxed">
+                  Fast-track login with pre-populated demo studio (Atelier Vance, 5 client portals, invoices, and deliverables).
+                </p>
+                <button
+                  type="button"
+                  onClick={handleFastTrackDevLogin}
+                  disabled={loading}
+                  className="w-full rounded-full py-2.5 px-4 text-xs font-semibold bg-amber-500 text-neutral-950 hover:bg-amber-400 transition flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 active:scale-[0.98]"
+                >
+                  {loading ? <CircularLoader size="xs" /> : <Zap className="h-3.5 w-3.5 fill-current" />}
+                  <span>1-Click Dev Sign-In (dev@clientportal.local)</span>
+                </button>
+              </div>
+            )}
+
+            {mode === "login" && !confirmationNotice && (
+              <div className="relative flex items-center justify-center my-4">
+                <div className="w-full border-t border-neutral-200 dark:border-neutral-800" />
+                <span className="absolute bg-white dark:bg-[#0B0F17] px-3 text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
+                  Or Sign In with Supabase Auth
+                </span>
+              </div>
+            )}
 
             {/* Confirmation Banner */}
             {confirmationNotice && (
@@ -494,14 +555,14 @@ export function AuthModule({ initialMode = "login" }: AuthModuleProps) {
                 </span>
               </div>
 
-              <blockquote className="font-editorial text-xl sm:text-2xl font-medium leading-snug text-white">
+              <blockquote className="font-ui text-xl sm:text-2xl font-bold leading-snug text-white">
                 &ldquo;Give every client an unforgettable review experience. Close deliverables
                 twice as fast with zero back-and-forth.&rdquo;
               </blockquote>
 
               <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs text-neutral-300">
-                <span className="font-semibold text-white">FreelanceOS Platform</span>
-                <span className="text-neutral-400">Live for Developers & Designers</span>
+                <span className="font-semibold text-white">ClientPortal Platform</span>
+                <span className="text-neutral-400">Built for Freelancers & Independent Studios</span>
               </div>
             </motion.div>
           </div>

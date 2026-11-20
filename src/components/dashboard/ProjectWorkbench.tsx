@@ -239,7 +239,7 @@ export function ProjectWorkbench({
               {bundle.project.clientCompany} - {bundle.project.clientName}
             </span>
           </div>
-          <h1 className="font-editorial text-4xl font-semibold tracking-tight">
+          <h1 className="font-ui text-3xl font-bold tracking-tight">
             {bundle.project.title}
           </h1>
           <p className="max-w-2xl text-sm text-[var(--ink-secondary)]">
@@ -285,7 +285,7 @@ export function ProjectWorkbench({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <p className="eyebrow">Weighted Roadmap</p>
-              <h2 className="mt-1 font-editorial text-3xl font-semibold">Milestones</h2>
+              <h2 className="mt-1 font-ui text-2xl font-bold">Milestones</h2>
             </div>
             <span
               className={`rounded-full border px-3.5 py-1 text-xs font-medium tabular-nums ${
@@ -398,7 +398,7 @@ export function ProjectWorkbench({
         <aside className="space-y-4 lg:col-span-4">
           <div>
             <p className="eyebrow">Access Control</p>
-            <h2 className="mt-1 font-editorial text-3xl font-semibold">Portal Password</h2>
+            <h2 className="mt-1 font-ui text-2xl font-bold">Portal Password</h2>
           </div>
 
           <form
@@ -454,7 +454,7 @@ export function ProjectWorkbench({
           {/* Project Invoices Summary */}
           <div className="surface-card rounded-3xl p-6 space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-editorial text-2xl font-semibold">Project Invoices</h3>
+              <h3 className="font-ui text-xl font-bold">Project Invoices</h3>
               <Link
                 href="/dashboard/invoices"
                 className="pill-btn pill-btn-outline px-3 py-1 text-[11px]"
@@ -499,7 +499,7 @@ export function ProjectWorkbench({
       <section className="space-y-5">
         <div>
           <p className="eyebrow">Files & Design Links</p>
-          <h2 className="mt-1 font-editorial text-3xl font-semibold">
+          <h2 className="mt-1 font-ui text-2xl font-bold">
             Deliverables & Version History
           </h2>
         </div>
@@ -526,7 +526,7 @@ export function ProjectWorkbench({
                           {del.kind.replace("_", " ")}
                         </span>
                       </div>
-                      <h3 className="mt-2 font-editorial text-2xl font-semibold">
+                      <h3 className="mt-2 font-ui text-xl font-bold">
                         {del.title}
                       </h3>
                       <p className="mt-1 text-xs text-[var(--ink-secondary)]">
@@ -623,7 +623,7 @@ export function ProjectWorkbench({
           >
             <div>
               <p className="eyebrow">Publish to Client Hub</p>
-              <h3 className="mt-1 font-editorial text-2xl font-semibold">
+              <h3 className="mt-1 font-ui text-xl font-bold">
                 Add Deliverable or Design Link
               </h3>
             </div>

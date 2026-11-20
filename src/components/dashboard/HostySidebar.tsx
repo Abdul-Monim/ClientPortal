@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   ExternalLink,
   FolderKanban,
-  Globe,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -17,6 +16,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { BrandAvatar } from "@/components/ui/BrandAvatar";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -93,13 +93,13 @@ export function HostySidebar({
           {/* Logo & Brand Identity matching Hosty aesthetic */}
           <div className={`flex items-center ${collapsed ? "flex-col gap-3 justify-center" : "justify-between"} px-1`}>
             <Link href="/dashboard" className="flex items-center gap-3 group overflow-hidden">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 text-white shadow-inner ring-1 ring-white/10 group-hover:scale-105 transition-transform">
-                <Globe className="h-5 w-5 text-sky-400" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-inner ring-1 ring-white/10 group-hover:scale-105 transition-transform">
+                <BrandLogo size={22} variant="dark" />
               </div>
               {!collapsed && (
                 <div className="truncate">
-                  <span className="block font-editorial text-2xl font-bold tracking-tight text-white truncate">
-                    ClientPortal.
+                  <span className="block font-ui text-xl font-bold tracking-tight text-white truncate">
+                    ClientPortal
                   </span>
                   <span className="block text-[10px] uppercase tracking-[0.2em] text-neutral-400 font-medium truncate">
                     {runtimeMode === "cloud" ? "Live Cloud" : "Studio Sandbox"}
@@ -242,9 +242,11 @@ export function HostySidebar({
       <div className="lg:hidden sticky top-3 z-40 mb-6">
         <div className="flex items-center justify-between rounded-full bg-[#0A0E17] text-white px-5 py-2.5 shadow-xl border border-neutral-800">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <Globe className="h-5 w-5 text-sky-400" />
-            <span className="font-editorial text-xl font-bold tracking-tight">
-              ClientPortal.
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white">
+              <BrandLogo size={18} variant="dark" />
+            </div>
+            <span className="font-ui text-lg font-bold tracking-tight text-white">
+              ClientPortal
             </span>
           </Link>
 

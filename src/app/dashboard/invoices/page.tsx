@@ -35,7 +35,7 @@ export default async function InvoicesPage() {
             <span>&bull;</span>
             <span className="text-neutral-900 dark:text-white">Invoices & Settlements</span>
           </div>
-          <h1 className="mt-1 font-editorial text-4xl font-semibold tracking-tight sm:text-5xl text-neutral-900 dark:text-white">
+          <h1 className="mt-1 font-ui text-3xl font-bold tracking-tight sm:text-4xl text-neutral-900 dark:text-white">
             Invoices & Payments
           </h1>
           <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">

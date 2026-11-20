@@ -153,7 +153,7 @@ export function InvoiceLedger({
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-hairline)] px-6 py-5">
           <div>
             <p className="eyebrow">Billing Ledger</p>
-            <h2 className="mt-1 font-editorial text-3xl font-semibold">
+            <h2 className="mt-1 font-ui text-2xl font-bold tracking-tight">
               Issued Invoices
             </h2>
           </div>
@@ -175,82 +175,94 @@ export function InvoiceLedger({
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border-hairline)]">
-              {invoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-[var(--surface-panel)]/50">
-                  <td className="px-6 py-4">
-                    <p className="font-semibold">{inv.invoiceNumber}</p>
-                    <p className="text-xs text-[var(--ink-muted)]">{inv.title}</p>
-                  </td>
-                  <td className="px-6 py-4">
-                    <p className="font-medium">{inv.clientCompany}</p>
-                    <p className="text-xs text-[var(--ink-muted)]">{inv.projectTitle}</p>
-                  </td>
-                  <td className="px-6 py-4 text-xs tabular-nums text-[var(--ink-secondary)]">
-                    {inv.dueDate}
-                  </td>
-                  <td className="px-6 py-4 font-semibold tabular-nums">
-                    {formatCurrencyCents(inv.totalCents, inv.currency)}
-                  </td>
-                  <td className="px-6 py-4">
-                    <StatusPill status={inv.status} />
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <a
-                        href={`/api/invoices/${inv.id}/pdf`}
-                        className="pill-btn pill-btn-outline px-3 py-1.5 text-xs"
-                      >
-                        <Download className="h-3.5 w-3.5" />
-                        <span>PDF</span>
-                      </a>
-                      {inv.stripeHostedUrl && (
-                        <a
-                          href={inv.stripeHostedUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="pill-btn pill-btn-outline px-3 py-1.5 text-xs"
-                        >
-                          <ExternalLink className="h-3.5 w-3.5" />
-                          <span>Stripe</span>
-                        </a>
-                      )}
-                      {inv.status === "draft" && (
-                        <button
-                          type="button"
-                          disabled={isPending}
-                          onClick={() => handleStatusChange(inv.id, inv.projectId, "sent")}
-                          className="pill-btn pill-btn-brand px-3 py-1.5 text-xs"
-                        >
-                          <Send className="h-3.5 w-3.5" />
-                          <span>Issue</span>
-                        </button>
-                      )}
-                      {(inv.status === "sent" || inv.status === "overdue") && (
-                        <>
-                          <button
-                            type="button"
-                            disabled={isPending}
-                            onClick={() => handleStatusChange(inv.id, inv.projectId, "paid")}
-                            className="pill-btn pill-btn-brand px-3 py-1.5 text-xs"
-                          >
-                            <CheckCircle2 className="h-3.5 w-3.5" />
-                            <span>Mark Paid</span>
-                          </button>
-                          <button
-                            type="button"
-                            disabled={isPending}
-                            onClick={() => handleStatusChange(inv.id, inv.projectId, "void")}
-                            className="pill-btn pill-btn-outline h-8 w-8 p-0 text-rose-600"
-                            title="Void Invoice"
-                          >
-                            <Ban className="h-3.5 w-3.5" />
-                          </button>
-                        </>
-                      )}
+              {invoices.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-xs text-[var(--ink-muted)]">
+                    <div className="max-w-sm mx-auto space-y-2">
+                      <Receipt className="mx-auto h-8 w-8 text-neutral-400" />
+                      <p className="font-semibold text-neutral-800 dark:text-neutral-200 text-sm">No Invoices Issued Yet</p>
+                      <p>Create a project and use the form below to issue your first itemized invoice or retainer deposit.</p>
                     </div>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                invoices.map((inv) => (
+                  <tr key={inv.id} className="hover:bg-[var(--surface-panel)]/50">
+                    <td className="px-6 py-4">
+                      <p className="font-semibold">{inv.invoiceNumber}</p>
+                      <p className="text-xs text-[var(--ink-muted)]">{inv.title}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <p className="font-medium">{inv.clientCompany}</p>
+                      <p className="text-xs text-[var(--ink-muted)]">{inv.projectTitle}</p>
+                    </td>
+                    <td className="px-6 py-4 text-xs tabular-nums text-[var(--ink-secondary)]">
+                      {inv.dueDate}
+                    </td>
+                    <td className="px-6 py-4 font-semibold tabular-nums">
+                      {formatCurrencyCents(inv.totalCents, inv.currency)}
+                    </td>
+                    <td className="px-6 py-4">
+                      <StatusPill status={inv.status} />
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <a
+                          href={`/api/invoices/${inv.id}/pdf`}
+                          className="pill-btn pill-btn-outline px-3 py-1.5 text-xs"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          <span>PDF</span>
+                        </a>
+                        {inv.stripeHostedUrl && (
+                          <a
+                            href={inv.stripeHostedUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="pill-btn pill-btn-outline px-3 py-1.5 text-xs"
+                          >
+                            <ExternalLink className="h-3.5 w-3.5" />
+                            <span>Stripe</span>
+                          </a>
+                        )}
+                        {inv.status === "draft" && (
+                          <button
+                            type="button"
+                            disabled={isPending}
+                            onClick={() => handleStatusChange(inv.id, inv.projectId, "sent")}
+                            className="pill-btn pill-btn-brand px-3 py-1.5 text-xs"
+                          >
+                            <Send className="h-3.5 w-3.5" />
+                            <span>Issue</span>
+                          </button>
+                        )}
+                        {(inv.status === "sent" || inv.status === "overdue") && (
+                          <>
+                            <button
+                              type="button"
+                              disabled={isPending}
+                              onClick={() => handleStatusChange(inv.id, inv.projectId, "paid")}
+                              className="pill-btn pill-btn-brand px-3 py-1.5 text-xs"
+                            >
+                              <CheckCircle2 className="h-3.5 w-3.5" />
+                              <span>Mark Paid</span>
+                            </button>
+                            <button
+                              type="button"
+                              disabled={isPending}
+                              onClick={() => handleStatusChange(inv.id, inv.projectId, "void")}
+                              className="pill-btn pill-btn-outline h-8 w-8 p-0 text-rose-600"
+                              title="Void Invoice"
+                            >
+                              <Ban className="h-3.5 w-3.5" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -263,7 +275,7 @@ export function InvoiceLedger({
       >
         <div>
           <p className="eyebrow">Issue New Invoice</p>
-          <h2 className="mt-1 font-editorial text-3xl font-semibold">
+          <h2 className="mt-1 font-ui text-2xl font-bold tracking-tight">
             Create Itemized Client Invoice
           </h2>
         </div>

@@ -9,6 +9,7 @@ import {
 import { buildStudioAnalytics } from "@/domain/analytics";
 import { calculateProjectProgressPct } from "@/domain/milestones";
 import { HostyAnalyticsView } from "@/components/dashboard/HostyAnalyticsView";
+import { FreshStartOnboarding } from "@/components/dashboard/FreshStartOnboarding";
 import { getPortalRepository } from "@/infrastructure/repositories";
 import { getAuthenticatedFreelancer } from "@/services/auth";
 
@@ -78,79 +79,85 @@ export default async function DashboardOverviewPage() {
           </div>
         </div>
 
-        {/* Portals Cards Grid */}
-        <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {bundles.map(({ project, milestones, deliverables }) => {
-            const pct = calculateProjectProgressPct(milestones);
-            const pendingCount = deliverables.filter(
-              (d) => d.status === "in_review"
-            ).length;
-            const approvedCount = deliverables.filter(
-              (d) => d.status === "approved"
-            ).length;
+        {bundles.length === 0 ? (
+          <div className="mt-6">
+            <FreshStartOnboarding studioName={studio.studioName} studioSlug={studio.slug} />
+          </div>
+        ) : (
+          /* Portals Cards Grid */
+          <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {bundles.map(({ project, milestones, deliverables }) => {
+              const pct = calculateProjectProgressPct(milestones);
+              const pendingCount = deliverables.filter(
+                (d) => d.status === "in_review"
+              ).length;
+              const approvedCount = deliverables.filter(
+                (d) => d.status === "approved"
+              ).length;
 
-            return (
-              <div
-                key={project.id}
-                className="rounded-2xl bg-[#111726] p-5 ring-1 ring-neutral-800/80 transition hover:ring-neutral-700 flex flex-col justify-between gap-5"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-neutral-400">
-                      {project.clientCompany}
-                    </span>
-                    <span className="rounded-full bg-emerald-950/80 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-800/60">
-                      Active
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-white tracking-tight">
-                      {project.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-neutral-400 line-clamp-2">
-                      {project.summary || "Client portal hub with milestone tracking."}
-                    </p>
-                  </div>
-
-                  {/* Progress Bar & Stats */}
-                  <div className="space-y-1.5 pt-2">
-                    <div className="flex items-center justify-between text-xs text-neutral-300">
-                      <span className="font-semibold">{pct}% Complete</span>
-                      <span className="text-neutral-400 text-[11px]">
-                        {approvedCount}/{deliverables.length} Approved • {pendingCount} in review
+              return (
+                <div
+                  key={project.id}
+                  className="rounded-2xl bg-[#111726] p-5 ring-1 ring-neutral-800/80 transition hover:ring-neutral-700 flex flex-col justify-between gap-5"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-neutral-400">
+                        {project.clientCompany}
+                      </span>
+                      <span className="rounded-full bg-emerald-950/80 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-800/60">
+                        Active
                       </span>
                     </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
-                      <div
-                        className="h-full rounded-full bg-blue-500 transition-all duration-300"
-                        style={{ width: `${pct}%` }}
-                      />
+
+                    <div>
+                      <h3 className="text-lg font-bold text-white tracking-tight">
+                        {project.title}
+                      </h3>
+                      <p className="mt-1 text-xs text-neutral-400 line-clamp-2">
+                        {project.summary || "Client portal hub with milestone tracking."}
+                      </p>
+                    </div>
+
+                    {/* Progress Bar & Stats */}
+                    <div className="space-y-1.5 pt-2">
+                      <div className="flex items-center justify-between text-xs text-neutral-300">
+                        <span className="font-semibold">{pct}% Complete</span>
+                        <span className="text-neutral-400 text-[11px]">
+                          {approvedCount}/{deliverables.length} Approved • {pendingCount} in review
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
+                        <div
+                          className="h-full rounded-full bg-blue-500 transition-all duration-300"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Actions row */}
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-neutral-800/60">
-                  <Link
-                    href={`/p/${studio.slug}/${project.slug}`}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[#1A2234] px-3.5 py-1.5 text-xs font-semibold text-neutral-300 hover:text-white hover:bg-[#232D44] transition"
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                    <span>Client View</span>
-                  </Link>
-                  <Link
-                    href={`/dashboard/projects/${project.id}`}
-                    className="inline-flex items-center gap-1 rounded-full bg-neutral-800 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-neutral-700 transition"
-                  >
-                    <span>Manage Hub</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
+                  {/* Actions row */}
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-neutral-800/60">
+                    <Link
+                      href={`/p/${studio.slug}/${project.slug}`}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#1A2234] px-3.5 py-1.5 text-xs font-semibold text-neutral-300 hover:text-white hover:bg-[#232D44] transition"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      <span>Client View</span>
+                    </Link>
+                    <Link
+                      href={`/dashboard/projects/${project.id}`}
+                      className="inline-flex items-center gap-1 rounded-full bg-neutral-800 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-neutral-700 transition"
+                    >
+                      <span>Manage Hub</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </section>
     </div>
   );

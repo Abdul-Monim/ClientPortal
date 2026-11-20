@@ -38,7 +38,7 @@ export function DashboardNav({
         <Link href="/dashboard" className="flex items-center gap-3 pl-1">
           <BrandAvatar studioName={studioName} logoUrl={logoUrl} size="sm" />
           <div className="leading-tight">
-            <span className="block font-editorial text-xl font-semibold">
+            <span className="block font-ui text-lg font-bold">
               {studioName}
             </span>
             <span className="block text-[10px] uppercase tracking-[0.18em] text-[var(--ink-muted)]">

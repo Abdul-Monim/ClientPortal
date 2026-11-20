@@ -3,15 +3,14 @@ import Link from "next/link";
 import {
   ArrowRight,
   Check,
+  CheckCircle2,
   ExternalLink,
-  FileCheck2,
-  Lock,
-  Receipt,
-  Sparkles,
   ShieldCheck,
+  Zap,
 } from "lucide-react";
 import { LandingNavbar } from "@/components/landing/LandingNavbar";
 import { LandingInteractiveShowcase } from "@/components/landing/LandingInteractiveShowcase";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { getPortalRepository } from "@/infrastructure/repositories";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +27,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-[#F3F4F6] p-3 sm:p-6 lg:p-8 font-ui text-neutral-900 selection:bg-neutral-900 selection:text-white dark:bg-[#07090E] dark:text-neutral-100">
       {/* Outer Editorial Canvas Frame matching the Reference Comp strictly <= 5% side gap */}
-      <div className="w-[95%] max-w-[1760px] mx-auto rounded-[2.5rem] border border-neutral-200/80 bg-white p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-300 dark:border-neutral-800 dark:bg-[#0C1017]">
+      <div className="w-[95%] max-w-[1760px] mx-auto rounded-[2.5rem] border border-neutral-200/80 bg-white p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-300 dark:border-neutral-800 dark:bg-[#0C1017] space-y-16 sm:space-y-24">
         {/* ========================================================= */}
         {/* 1. INTERACTIVE NAVBAR (MOBILE DRAWER + THEME TOGGLE) */}
         {/* ========================================================= */}
@@ -37,187 +36,222 @@ export default async function HomePage() {
         {/* ========================================================= */}
         {/* 2. HERO TWO-COLUMN SPLIT (ABOUT ANCHOR) */}
         {/* ========================================================= */}
-        <section id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 py-10 sm:py-16 items-center">
-          {/* Left Column: Editorial Copy */}
+        <section id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-2 pb-6">
+          {/* Left Column: Niche Editorial Copy */}
           <div className="lg:col-span-6 space-y-6 sm:space-y-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 px-3.5 py-1 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
-              <span>Next-Generation Client Hub for Creatives</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 px-4 py-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300 shadow-xs">
+              <BrandLogo size={16} variant="adaptive" className="text-neutral-900 dark:text-white" />
+              <span>White-Label Client Hub for Freelancers & Studios</span>
             </div>
 
-            <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-neutral-950 dark:text-white leading-[1.08]">
-              App To Work Your Way,
+            <h1 className="font-ui text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-950 dark:text-white leading-[1.08]">
+              Deliver Work Calmly.
               <br />
-              Across Time And Space
+              Close Approvals Faster.
+              <br />
+              Get Paid on Time.
             </h1>
 
-            <p className="text-base sm:text-lg text-neutral-500 dark:text-neutral-400 max-w-lg leading-relaxed">
-              A calm, dedicated client workspace that eliminates messy email chains.
-              Share deliverables, collect approvals, and get paid with zero login friction for your clients.
+            <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 max-w-lg leading-relaxed">
+              Stop losing feedback in messy WhatsApp threads and buried email chains.
+              Give each client a dedicated, password-protected hub to review deliverables,
+              track milestone progress, and pay invoices with one click.
             </p>
 
-            {/* CTA Group with Pill Button & Guarantee Badge */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            {/* CTA Group with Material You Pill Buttons */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link
-                href="/dashboard"
-                className="rounded-full bg-neutral-950 px-8 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition flex items-center gap-2.5"
+                href="/signup"
+                className="rounded-full bg-neutral-950 px-8 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition flex items-center gap-2.5 active:scale-95"
               >
-                <span>Get started</span>
+                <span>Launch Free Studio</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
               <Link
                 href={samplePortalHref}
-                className="rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 shadow-sm hover:bg-neutral-50 dark:hover:bg-neutral-800 transition flex items-center gap-2"
+                className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 shadow-xs hover:bg-neutral-50 dark:hover:bg-neutral-800 transition flex items-center gap-2"
               >
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                <span>Explore Live Hub</span>
+                <span>Test Live Client View</span>
               </Link>
 
-              <div className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300 font-medium">
+              <Link
+                href="/login"
+                className="rounded-full bg-amber-500/15 border border-amber-500/30 px-5 py-3.5 text-xs font-semibold text-amber-800 dark:text-amber-300 hover:bg-amber-500/25 transition flex items-center gap-1.5"
+                title="1-Click fast-track for developer debugging and demo inspection"
+              >
+                <Zap className="h-3.5 w-3.5 fill-current" />
+                <span>Dev / Demo Mode</span>
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-5 text-xs text-neutral-500 dark:text-neutral-400 font-medium pt-1">
+              <div className="flex items-center gap-1.5">
                 <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
-                <span>14 days free trial</span>
+                <span>Zero client sign-ups</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
+                <span>Direct Stripe card checkout</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
+                <span>Official PDF receipts</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Hero Cosmic Prismatic Visual */}
+          {/* Right Column: Visual Product Showcase Comp */}
           <div className="lg:col-span-6">
-            <div className="relative overflow-hidden rounded-[2rem] border border-neutral-800 bg-[#06070B] shadow-2xl aspect-square sm:aspect-[4/3] lg:aspect-square flex items-center justify-center group">
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-neutral-200 dark:border-neutral-800 bg-[#06080E] shadow-2xl aspect-[4/3] flex items-center justify-center group">
               <Image
-                src="/hero-cosmic.jpg"
-                alt="Astronaut floating weightlessly in deep cosmic space on iridescent liquid glass"
+                src="/showcase-cosmic.jpg"
+                alt="Minimalist crystal prism floating in deep space casting cyan and violet caustics"
                 fill
                 priority
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              {/* Subtle Ambient Radial Light Gradient */}
-              <div className="pointer-events-none absolute inset-0 bg-radial from-transparent via-transparent to-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-6 sm:p-8">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-white">
+                    <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                    <span>Private Client Hub &bull; Meridian Labs</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">
+                    Figma designs, milestone tracking & Stripe payments in one clean URL.
+                  </h3>
+                  <p className="text-xs text-neutral-300">
+                    Clients simply enter their project password. No account creation required.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ========================================================= */}
-        {/* 3. LOGO / TRUSTED BY ROW */}
+        {/* 3. 3-STEP REAL-LIFE CLIENT WORKFLOW                       */}
         {/* ========================================================= */}
-        <section className="pt-8 sm:pt-12 pb-6 border-t border-neutral-100 dark:border-neutral-800/80">
-          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 font-medium mb-6">
-            Trusted by independent freelancers, studios, and agencies
-          </p>
-
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-6 sm:gap-8 items-center text-neutral-400 dark:text-neutral-600">
-            {/* 8 Clean Geometric Vector Marks */}
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="9" fillOpacity="0.2" />
-                <path d="M12 3a9 9 0 0 0 0 18v-18z" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2l2.4 7.6H22l-6.2 4.5 2.4 7.6-6.2-4.5-6.2 4.5 2.4-7.6-6.2-4.5h7.6z" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="4" y="4" width="6" height="6" rx="2" />
-                <rect x="14" y="4" width="6" height="6" rx="2" />
-                <rect x="4" y="14" width="6" height="6" rx="2" />
-                <rect x="14" y="14" width="6" height="6" rx="2" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="6" cy="6" r="3" />
-                <circle cx="18" cy="6" r="3" />
-                <circle cx="6" cy="18" r="3" />
-                <circle cx="18" cy="18" r="3" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-                <circle cx="12" cy="12" r="6" stroke="currentColor" strokeWidth="2" fill="none" />
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </div>
-            <div className="flex items-center justify-center hover:text-neutral-800 dark:hover:text-neutral-300 transition">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" />
-              </svg>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================= */}
-        {/* 4. CORE FEATURES & CAPABILITIES */}
-        {/* ========================================================= */}
-        <section id="features" className="py-16 sm:py-20 border-t border-neutral-100 dark:border-neutral-800/80">
-          <div className="max-w-2xl">
+        <section className="border-t border-neutral-100 dark:border-neutral-800/80 pt-16">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
             <span className="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400">
-              Calm Collaboration
+              The 3-Step Client Workflow
             </span>
-            <h2 className="mt-2 font-editorial text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
-              Everything your clients need, zero messy email chains.
+            <h2 className="font-ui text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
+              How ClientPortal works in practice
             </h2>
-            <p className="mt-3 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
-              Give each client a dedicated link protected by a simple passcode. They see milestones,
-              review deliverables, leave approvals, and pay invoices with one click.
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">
+              Designed from real-life client-server scenarios to keep projects moving forward without friction.
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Feature 1 */}
-            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/50 p-8 dark:border-neutral-800 dark:bg-[#10141D] transition hover:shadow-lg">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">
-                <Lock className="h-4 w-4" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/60 p-8 dark:border-neutral-800 dark:bg-[#10141D] space-y-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white font-bold text-sm shadow-md">
+                01
               </div>
-              <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
-                Passcode Gate & Zero Sign-Up
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">
+                Create Workspace in 60s
               </h3>
-              <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Clients enter a simple password. No account creation, no password resets, no friction.
-                Protected by instant bank-grade passcodes so clients can view deliverables immediately.
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Add your client&apos;s name and company, outline the project milestones, and set a simple client passcode.
+                No client accounts or sign-ups required.
               </p>
             </div>
 
-            {/* Feature 2 */}
-            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/50 p-8 dark:border-neutral-800 dark:bg-[#10141D] transition hover:shadow-lg">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">
-                <FileCheck2 className="h-4 w-4" />
+            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/60 p-8 dark:border-neutral-800 dark:bg-[#10141D] space-y-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white font-bold text-sm shadow-md">
+                02
               </div>
-              <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
-                Deliverables & Version Revisions
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">
+                Share Deliverables & Inspect
               </h3>
-              <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Present Figma designs, videos, PDFs, and staging links. Clients switch between
-                v1 and v2, leave timestamped feedback, and sign off with a single click.
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Publish Figma links, Loom videos, PDFs, or staging URLs. Clients open the asset in an inline lightbox,
+                review version changelogs, and leave formal sign-offs.
               </p>
             </div>
 
-            {/* Feature 3 */}
-            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/50 p-8 dark:border-neutral-800 dark:bg-[#10141D] transition hover:shadow-lg">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-950">
-                <Receipt className="h-4 w-4" />
+            <div className="rounded-3xl border border-neutral-200/80 bg-neutral-50/60 p-8 dark:border-neutral-800 dark:bg-[#10141D] space-y-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-600 text-white font-bold text-sm shadow-md">
+                03
               </div>
-              <h3 className="mt-6 text-lg font-semibold text-neutral-900 dark:text-white">
-                Direct Stripe & Branded PDF
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">
+                Get Invoices Settled Instantly
               </h3>
-              <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                Connect Stripe for direct online card settlements, or let clients download
-                clean, official branded PDF invoices with itemized totals and instant receipts.
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Attach milestone invoices directly in the client hub. Clients pay via Stripe or card,
+                and download official branded PDF receipts on the spot.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================= */}
+        {/* 4. REAL-WORLD COMPARISON (OLD WAY VS CLIENTPORTAL WAY)   */}
+        {/* ========================================================= */}
+        <section className="border-t border-neutral-100 dark:border-neutral-800/80 pt-16">
+          <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
+            <span className="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400">
+              Harmonious Collaboration
+            </span>
+            <h2 className="font-ui text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
+              Why freelancers switch to ClientPortal
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* The Old Way */}
+            <div className="rounded-3xl border border-rose-200/70 bg-rose-50/30 p-8 dark:border-rose-950/40 dark:bg-rose-950/10 space-y-5">
+              <div className="flex items-center gap-2.5 text-rose-700 dark:text-rose-400 font-bold text-sm">
+                <span>The Chaotic Way (Email, Slack, WhatsApp)</span>
+              </div>
+              <ul className="space-y-3.5 text-sm text-neutral-600 dark:text-neutral-400">
+                <li className="flex items-start gap-2.5">
+                  <span className="text-rose-500 font-bold mt-0.5">&times;</span>
+                  <span>Feedback scattered across WhatsApp voice notes, email threads, and Figma comments.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-rose-500 font-bold mt-0.5">&times;</span>
+                  <span>Clients constantly asking: &ldquo;Can you resend the latest version link?&rdquo;</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-rose-500 font-bold mt-0.5">&times;</span>
+                  <span>No audit trail of who approved what design or when changes were requested.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-rose-500 font-bold mt-0.5">&times;</span>
+                  <span>Chasing bank transfer receipts and invoice payments at the end of the month.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* The ClientPortal Way */}
+            <div className="rounded-3xl border border-emerald-200/70 bg-emerald-50/30 p-8 dark:border-emerald-950/40 dark:bg-emerald-950/10 space-y-5">
+              <div className="flex items-center gap-2.5 text-emerald-700 dark:text-emerald-400 font-bold text-sm">
+                <CheckCircle2 className="h-4 w-4" />
+                <span>The ClientPortal Blueprint</span>
+              </div>
+              <ul className="space-y-3.5 text-sm text-neutral-700 dark:text-neutral-300">
+                <li className="flex items-start gap-2.5">
+                  <Check className="h-4 w-4 text-emerald-500 font-bold mt-0.5 shrink-0" />
+                  <span>One dedicated, password-protected URL per client. Always current.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="h-4 w-4 text-emerald-500 font-bold mt-0.5 shrink-0" />
+                  <span>Version vault with changelog notes and instant asset inspection modal.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="h-4 w-4 text-emerald-500 font-bold mt-0.5 shrink-0" />
+                  <span>Formal client approvals with timestamped audit records.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="h-4 w-4 text-emerald-500 font-bold mt-0.5 shrink-0" />
+                  <span>1-click card payments via Stripe and instant branded PDF receipts.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </section>
@@ -230,12 +264,12 @@ export default async function HomePage() {
         {/* ========================================================= */}
         {/* 6. PRICING SECTION */}
         {/* ========================================================= */}
-        <section id="pricing" className="py-16 sm:py-20 border-t border-neutral-100 dark:border-neutral-800/80">
-          <div className="text-center max-w-xl mx-auto">
+        <section id="pricing" className="py-12 border-t border-neutral-100 dark:border-neutral-800/80">
+          <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400">
               Simple Pricing
             </span>
-            <h2 className="mt-2 font-editorial text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+            <h2 className="font-ui text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
               Start free, ascend as your client roster grows.
             </h2>
           </div>
@@ -317,7 +351,7 @@ export default async function HomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-emerald-400" />
-                    <span>Hosty-grade analytics & velocity charts</span>
+                    <span>Interactive analytics & velocity charts</span>
                   </li>
                 </ul>
               </div>
@@ -338,12 +372,13 @@ export default async function HomePage() {
         {/* 7. EDITORIAL FOOTER */}
         {/* ========================================================= */}
         <footer className="pt-10 border-t border-neutral-100 dark:border-neutral-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-neutral-900 dark:text-white">ClientPortal</span>
+          <div className="flex items-center gap-3">
+            <BrandLogo size={20} variant="adaptive" />
+            <span className="font-bold text-neutral-900 dark:text-white">ClientPortal</span>
             <span>&bull;</span>
             <span>M. Abdul Monim</span>
             <span>&bull;</span>
-            <span>Independent White-Label SaaS Platform</span>
+            <span>White-Label Freelancer SaaS Platform</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -352,6 +387,9 @@ export default async function HomePage() {
             </Link>
             <Link href={samplePortalHref} className="hover:text-neutral-900 dark:hover:text-white transition">
               Sample Hub
+            </Link>
+            <Link href="/login" className="hover:text-neutral-900 dark:hover:text-white transition">
+              Dev Mode
             </Link>
             <Link href="https://github.com/Abdul-Monim/ClientPortal" target="_blank" className="hover:text-neutral-900 dark:hover:text-white transition flex items-center gap-1">
               <span>GitHub</span>

@@ -15,6 +15,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 interface LandingNavbarProps {
   samplePortalHref: string;
@@ -51,19 +52,11 @@ export function LandingNavbar({ samplePortalHref }: LandingNavbarProps) {
       <header className="relative flex items-center justify-between pb-8 sm:pb-12 border-b border-neutral-100 dark:border-neutral-800/80">
         {/* Brand Logo & Editorial Title */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-900 transition-transform group-hover:scale-105">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
-            </svg>
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-900 transition-transform group-hover:scale-105">
+            <BrandLogo size={24} variant="adaptive" className="text-white dark:text-neutral-900" />
           </div>
-          <span className="font-editorial text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">
-            FreelanceOS
+          <span className="font-ui text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+            ClientPortal
           </span>
         </Link>
 
@@ -169,10 +162,10 @@ export function LandingNavbar({ samplePortalHref }: LandingNavbarProps) {
                 <div className="flex items-center justify-between pb-6 border-b border-neutral-100 dark:border-neutral-800">
                   <div className="flex items-center gap-2.5">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
-                      <Sparkles className="h-4 w-4" />
+                      <BrandLogo size={18} variant="adaptive" className="text-white dark:text-neutral-900" />
                     </div>
-                    <span className="font-editorial text-lg font-semibold text-neutral-900 dark:text-white">
-                      Navigation
+                    <span className="font-ui text-lg font-bold text-neutral-900 dark:text-white">
+                      ClientPortal
                     </span>
                   </div>
                   <button

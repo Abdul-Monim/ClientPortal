@@ -35,7 +35,7 @@ export function LandingInteractiveShowcase({
           <span className="text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400">
             Interactive Product Tour
           </span>
-          <h2 className="mt-2 font-editorial text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+          <h2 className="mt-2 font-ui text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white">
             Two perspectives. One effortless flow.
           </h2>
           <p className="mt-3 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base max-w-xl">

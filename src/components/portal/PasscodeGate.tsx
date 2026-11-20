@@ -128,7 +128,7 @@ export function PasscodeGate({
         <div className="flex items-center gap-3">
           <BrandAvatar studioName={studioName} logoUrl={studioLogoUrl} size="md" />
           <div>
-            <p className="font-editorial text-2xl font-bold leading-none text-neutral-900 dark:text-white">
+            <p className="font-ui text-xl font-bold leading-none text-neutral-900 dark:text-white">
               {studioName}
             </p>
             <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-neutral-400 font-mono">
@@ -162,7 +162,7 @@ export function PasscodeGate({
           </div>
         </div>
 
-        <h1 className="mt-5 font-editorial text-3xl sm:text-4xl font-semibold leading-tight text-neutral-900 dark:text-white tracking-tight">
+        <h1 className="mt-5 font-ui text-3xl sm:text-4xl font-bold leading-tight text-neutral-900 dark:text-white tracking-tight">
           {projectTitle}
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">

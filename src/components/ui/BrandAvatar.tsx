@@ -1,3 +1,5 @@
+import { BrandLogo } from "./BrandLogo";
+
 export function BrandAvatar({
   studioName,
   logoUrl,
@@ -20,6 +22,8 @@ export function BrandAvatar({
         ? "h-14 w-14 text-lg"
         : "h-11 w-11 text-sm";
 
+  const logoSize = size === "sm" ? 18 : size === "lg" ? 28 : 22;
+
   if (logoUrl) {
     return (
       <img
@@ -32,13 +36,14 @@ export function BrandAvatar({
 
   return (
     <div
-      className={`${dims} inline-flex items-center justify-center rounded-full font-editorial font-semibold tracking-wider shrink-0`}
+      className={`${dims} inline-flex items-center justify-center rounded-full font-ui font-semibold tracking-wider shrink-0 shadow-xs`}
       style={{
         backgroundColor: "var(--brand-accent)",
         color: "var(--brand-accent-fg)",
       }}
+      title={studioName}
     >
-      {initials || "CP"}
+      {initials ? initials : <BrandLogo size={logoSize} variant="dark" />}
     </div>
   );
 }

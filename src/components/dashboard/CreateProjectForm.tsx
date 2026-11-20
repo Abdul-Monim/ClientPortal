@@ -61,7 +61,7 @@ export function CreateProjectForm({ studioSlug }: { studioSlug: string }) {
     <form onSubmit={handleSubmit} className="surface-card rounded-3xl p-6 space-y-5">
       <div>
         <p className="eyebrow">New Client Portal</p>
-        <h2 className="mt-1 font-editorial text-3xl font-semibold">
+        <h2 className="mt-1 font-ui text-2xl font-bold tracking-tight">
           Launch a dedicated project hub
         </h2>
       </div>

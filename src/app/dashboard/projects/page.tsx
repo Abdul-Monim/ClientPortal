@@ -49,7 +49,7 @@ export default async function ProjectsPage() {
             <span>&bull;</span>
             <span className="text-neutral-900 dark:text-white">Client Portals</span>
           </div>
-          <h1 className="mt-1 font-editorial text-4xl font-semibold tracking-tight sm:text-5xl text-neutral-900 dark:text-white">
+          <h1 className="mt-1 font-ui text-3xl font-bold tracking-tight sm:text-4xl text-neutral-900 dark:text-white">
             Client Workspaces
           </h1>
           <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
@@ -147,95 +147,111 @@ export default async function ProjectsPage() {
       </section>
 
       {/* ========================================================= */}
-      {/* 3. PORTAL CARDS GRID */}
+      {/* 3. PORTAL CARDS GRID & EMPTY STATE                        */}
       {/* ========================================================= */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {bundles.map(({ project, milestones, deliverables, invoices }) => {
-          const pct = calculateProjectProgressPct(milestones);
-          const portalPath = `/p/${studio.slug}/${project.slug}`;
+      {bundles.length === 0 ? (
+        <div className="rounded-3xl border border-neutral-200/80 bg-white p-10 text-center dark:border-neutral-800 dark:bg-[#0E131F] space-y-4">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 shadow-xs">
+            <FolderKanban className="h-7 w-7" />
+          </div>
+          <div className="max-w-md mx-auto space-y-1.5">
+            <h3 className="font-ui text-xl font-bold text-neutral-900 dark:text-white">
+              No Client Workspaces Yet
+            </h3>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              Ready to invite your first client? Use the creation form below to launch a private, password-protected hub with custom milestones and deliverables.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {bundles.map(({ project, milestones, deliverables, invoices }) => {
+            const pct = calculateProjectProgressPct(milestones);
+            const portalPath = `/p/${studio.slug}/${project.slug}`;
 
-          return (
-            <article
-              key={project.id}
-              className="flex flex-col justify-between rounded-3xl border border-neutral-200/80 bg-white p-6 sm:p-7 shadow-sm transition hover:shadow-md dark:border-neutral-800 dark:bg-[#0E131F]"
-            >
-              <div>
-                {/* Status + Target Launch Row */}
-                <div className="flex items-center justify-between gap-2">
-                  <StatusPill status={project.status} />
-                  {project.targetLaunchDate && (
-                    <span className="inline-flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-                      <Calendar className="h-3.5 w-3.5" />
-                      <span>Target: {project.targetLaunchDate}</span>
+            return (
+              <article
+                key={project.id}
+                className="flex flex-col justify-between rounded-3xl border border-neutral-200/80 bg-white p-6 sm:p-7 shadow-sm transition hover:shadow-md dark:border-neutral-800 dark:bg-[#0E131F]"
+              >
+                <div>
+                  {/* Status + Target Launch Row */}
+                  <div className="flex items-center justify-between gap-2">
+                    <StatusPill status={project.status} />
+                    {project.targetLaunchDate && (
+                      <span className="inline-flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>Target: {project.targetLaunchDate}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Project Title & Client Details */}
+                  <h2 className="mt-4 font-ui text-2xl font-bold text-neutral-900 dark:text-white tracking-tight">
+                    {project.title}
+                  </h2>
+                  <div className="mt-1 flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                    <span className="font-semibold text-neutral-800 dark:text-neutral-200">
+                      {project.clientCompany}
                     </span>
+                    <span>&bull;</span>
+                    <span>{project.clientName}</span>
+                  </div>
+
+                  {project.summary && (
+                    <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 line-clamp-2">
+                      {project.summary}
+                    </p>
                   )}
-                </div>
 
-                {/* Project Title & Client Details */}
-                <h2 className="mt-4 font-editorial text-3xl font-semibold text-neutral-900 dark:text-white tracking-tight">
-                  {project.title}
-                </h2>
-                <div className="mt-1 flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                  <span className="font-semibold text-neutral-800 dark:text-neutral-200">
-                    {project.clientCompany}
-                  </span>
-                  <span>&bull;</span>
-                  <span>{project.clientName}</span>
-                </div>
-
-                {project.summary && (
-                  <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 line-clamp-2">
-                    {project.summary}
-                  </p>
-                )}
-
-                {/* Milestone Progress Bar */}
-                <div className="mt-6 space-y-2 rounded-2xl bg-neutral-50 dark:bg-neutral-800/40 p-4 ring-1 ring-neutral-200/60 dark:ring-neutral-800">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-neutral-500 dark:text-neutral-400">
-                      Milestone Completion
-                    </span>
-                    <span className="font-bold text-neutral-900 dark:text-white tabular-nums">
-                      {pct}%
-                    </span>
-                  </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700">
-                    <div
-                      className="h-full rounded-full bg-neutral-900 dark:bg-white transition-all duration-500"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                  <div className="flex flex-wrap items-center justify-between pt-1 text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
-                    <span>{milestones.length} milestones</span>
-                    <span>{deliverables.length} deliverables</span>
-                    <span>{invoices.length} invoices</span>
+                  {/* Milestone Progress Bar */}
+                  <div className="mt-6 space-y-2 rounded-2xl bg-neutral-50 dark:bg-neutral-800/40 p-4 ring-1 ring-neutral-200/60 dark:ring-neutral-800">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-medium text-neutral-500 dark:text-neutral-400">
+                        Milestone Completion
+                      </span>
+                      <span className="font-bold text-neutral-900 dark:text-white tabular-nums">
+                        {pct}%
+                      </span>
+                    </div>
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700">
+                      <div
+                        className="h-full rounded-full bg-neutral-900 dark:bg-white transition-all duration-500"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <div className="flex flex-wrap items-center justify-between pt-1 text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
+                      <span>{milestones.length} milestones</span>
+                      <span>{deliverables.length} deliverables</span>
+                      <span>{invoices.length} invoices</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Action Buttons Row with 50% radius pills */}
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-800/80">
-                <Link
-                  href={portalPath}
-                  target="_blank"
-                  className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-4 py-2 text-xs font-semibold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition flex items-center gap-1.5 shadow-xs"
-                >
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  <span>Client View</span>
-                </Link>
+                {/* Action Buttons Row with 50% radius pills */}
+                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-800/80">
+                  <Link
+                    href={portalPath}
+                    target="_blank"
+                    className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-4 py-2 text-xs font-semibold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition flex items-center gap-1.5 shadow-xs"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    <span>Client View</span>
+                  </Link>
 
-                <Link
-                  href={`/dashboard/projects/${project.id}`}
-                  className="rounded-full bg-neutral-950 dark:bg-white px-5 py-2 text-xs font-semibold text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition flex items-center gap-2 shadow-sm"
-                >
-                  <span>Open Workbench</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </article>
-          );
-        })}
-      </section>
+                  <Link
+                    href={`/dashboard/projects/${project.id}`}
+                    className="rounded-full bg-neutral-950 dark:bg-white px-5 py-2 text-xs font-semibold text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition flex items-center gap-2 shadow-sm"
+                  >
+                    <span>Open Workbench</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      )}
 
       {/* ========================================================= */}
       {/* 4. NEW CLIENT HUB CREATION FORM */}

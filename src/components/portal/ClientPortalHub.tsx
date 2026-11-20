@@ -133,6 +133,8 @@ export function ClientPortalHub({
 
   // Asset Lightbox / Inline Preview state
   const [previewDeliverable, setPreviewDeliverable] = useState<{
+    deliverable?: Deliverable;
+    versionId?: string;
     title: string;
     kind: Deliverable["kind"];
     url: string;
@@ -404,7 +406,7 @@ export function ClientPortalHub({
               <BrandAvatar studioName={bundle.studio.studioName} logoUrl={bundle.studio.logoUrl} size="sm" />
               {!sidebarCollapsed && (
                 <div className="leading-tight truncate">
-                  <span className="block font-editorial text-lg font-bold tracking-tight text-white truncate">
+                  <span className="block font-ui text-base font-bold tracking-tight text-white truncate">
                     {bundle.studio.studioName}
                   </span>
                   <span className="block text-[10px] uppercase tracking-[0.2em] text-neutral-400 font-medium truncate">
@@ -531,7 +533,7 @@ export function ClientPortalHub({
         <div className="flex items-center gap-3">
           <BrandAvatar studioName={bundle.studio.studioName} logoUrl={bundle.studio.logoUrl} size="sm" />
           <div className="leading-tight">
-            <span className="block font-editorial text-base font-bold text-white">{bundle.studio.studioName}</span>
+            <span className="block font-ui text-base font-bold text-white">{bundle.studio.studioName}</span>
             <span className="block text-[10px] uppercase tracking-wider text-neutral-400">{bundle.project.clientCompany}</span>
           </div>
         </div>
@@ -560,7 +562,7 @@ export function ClientPortalHub({
               <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
                 <div className="flex items-center gap-2.5">
                   <BrandAvatar studioName={bundle.studio.studioName} logoUrl={bundle.studio.logoUrl} size="sm" />
-                  <span className="font-editorial text-lg font-bold">{bundle.studio.studioName}</span>
+                  <span className="font-ui text-lg font-bold">{bundle.studio.studioName}</span>
                 </div>
                 <button
                   type="button"
@@ -740,7 +742,7 @@ export function ClientPortalHub({
                   </span>
                 </div>
 
-                <h1 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+                <h1 className="font-ui text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white">
                   {bundle.project.title}
                 </h1>
                 <p className="max-w-2xl text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
@@ -1209,6 +1211,8 @@ export function ClientPortalHub({
                               onClick={() => {
                                 const targetUrl = activeVersion.assetUrl || activeVersion.externalUrl || "";
                                 setPreviewDeliverable({
+                                  deliverable: del,
+                                  versionId: activeVersion.id,
                                   title: del.title,
                                   kind: del.kind,
                                   url: targetUrl,
@@ -1953,13 +1957,68 @@ export function ClientPortalHub({
               )}
             </div>
 
-            {/* Release notes footer */}
-            {previewDeliverable.notes && (
-              <div className="px-6 py-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 shrink-0 text-xs text-neutral-600 dark:text-neutral-400">
-                <span className="font-semibold text-neutral-900 dark:text-white">Changelog Notes: </span>
-                <span>{previewDeliverable.notes}</span>
+            {/* Modal Footer with Changelog and Instant Action Buttons */}
+            <div className="px-6 py-4 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 shrink-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-ui">
+              <div className="text-xs text-neutral-600 dark:text-neutral-400">
+                {previewDeliverable.notes ? (
+                  <div>
+                    <span className="font-bold text-neutral-900 dark:text-white">Changelog Notes: </span>
+                    <span>{previewDeliverable.notes}</span>
+                  </div>
+                ) : (
+                  <span>Verified asset ready for client inspection and sign-off</span>
+                )}
               </div>
-            )}
+
+              {previewDeliverable.deliverable && (
+                <div className="flex items-center gap-2.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const del = previewDeliverable.deliverable!;
+                      const targetVersionId =
+                        previewDeliverable.versionId ||
+                        del.versions.find((v) => v.versionNumber === previewDeliverable.versionNumber)?.id ||
+                        del.versions[del.versions.length - 1]?.id ||
+                        "";
+                      setPreviewDeliverable(null);
+                      setReviewModal({
+                        deliverable: del,
+                        versionId: targetVersionId,
+                        versionNumber: previewDeliverable.versionNumber,
+                        decision: "changes_requested",
+                      });
+                    }}
+                    className="rounded-full border border-neutral-300 dark:border-neutral-700 px-4 py-2 text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition flex items-center gap-1.5"
+                  >
+                    <span>Request Changes</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const del = previewDeliverable.deliverable!;
+                      const targetVersionId =
+                        previewDeliverable.versionId ||
+                        del.versions.find((v) => v.versionNumber === previewDeliverable.versionNumber)?.id ||
+                        del.versions[del.versions.length - 1]?.id ||
+                        "";
+                      setPreviewDeliverable(null);
+                      setReviewModal({
+                        deliverable: del,
+                        versionId: targetVersionId,
+                        versionNumber: previewDeliverable.versionNumber,
+                        decision: "approved",
+                      });
+                    }}
+                    className="rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 text-xs font-semibold transition flex items-center gap-1.5 shadow-xs"
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <span>Approve Deliverable</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
