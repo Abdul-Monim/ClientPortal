@@ -22,6 +22,7 @@ import { inferDeliverableKindFromUrl } from "@/domain/theme";
 import type { DeliverableKind, MilestoneStatus, ProjectBundle } from "@/domain/types";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { InfoTooltip } from "@/components/ui/InfoTooltip";
 import {
   createDeliverableAction,
   createMilestoneAction,
@@ -251,16 +252,21 @@ export function ProjectWorkbench({
               onClick={copyPortalUrl}
               className="pill-btn pill-btn-outline px-4 py-2 text-xs"
             >
-              {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
               <span>{copied ? "Portal Link Copied" : "Copy Client Portal Link"}</span>
             </button>
             <Link
               href={`/p/${bundle.studio.slug}/${bundle.project.slug}`}
+              target="_blank"
               className="pill-btn pill-btn-brand px-4 py-2 text-xs"
             >
               <ExternalLink className="h-3.5 w-3.5" />
               <span>Open Live Client Hub</span>
             </Link>
+            <InfoTooltip
+              title="Client Hub Access"
+              content="Clients open this URL with the assigned passcode. No registration needed. They can review assets, approve milestones, and pay invoices directly."
+            />
           </div>
         </div>
 
@@ -695,7 +701,7 @@ export function ProjectWorkbench({
                     }
                   }}
                   placeholder="https://figma.com/design/... or https://preview.vercel.app"
-                  className="field-input pl-10"
+                  className="field-input has-leading-icon"
                 />
               </div>
             </div>
@@ -730,7 +736,7 @@ export function ProjectWorkbench({
 
             <div>
               <label className="mb-1.5 block text-xs font-medium text-[var(--ink-secondary)]">
-                Summary & Release Notes
+                Summary & Scope
               </label>
               <textarea
                 rows={2}
@@ -741,13 +747,18 @@ export function ProjectWorkbench({
               />
             </div>
 
-            <input
-              type="text"
-              value={delNotes}
-              onChange={(e) => setDelNotes(e.target.value)}
-              placeholder="v1 release notes"
-              className="field-input"
-            />
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-[var(--ink-secondary)]">
+                Initial Version (v1) Notes
+              </label>
+              <input
+                type="text"
+                value={delNotes}
+                onChange={(e) => setDelNotes(e.target.value)}
+                placeholder="e.g. Initial draft release for feedback"
+                className="field-input"
+              />
+            </div>
 
             <button
               type="submit"

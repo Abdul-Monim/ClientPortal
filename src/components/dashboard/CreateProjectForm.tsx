@@ -170,7 +170,7 @@ export function CreateProjectForm({ studioSlug }: { studioSlug: string }) {
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
               placeholder="solstice2026"
-              className="field-input pl-10"
+              className="field-input has-leading-icon"
             />
           </div>
         </div>

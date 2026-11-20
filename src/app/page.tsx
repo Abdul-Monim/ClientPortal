@@ -106,8 +106,8 @@ export default async function HomePage() {
           <div className="lg:col-span-6">
             <div className="relative overflow-hidden rounded-[2.5rem] border border-neutral-200 dark:border-neutral-800 bg-[#06080E] shadow-2xl aspect-[4/3] flex items-center justify-center group">
               <Image
-                src="/showcase-cosmic.jpg"
-                alt="Minimalist crystal prism floating in deep space casting cyan and violet caustics"
+                src="/hero-cosmic.jpg"
+                alt="Solitary astronaut floating weightlessly through deep space with prismatic aurora ribbons"
                 fill
                 priority
                 className="object-cover transition-transform duration-700 group-hover:scale-105"

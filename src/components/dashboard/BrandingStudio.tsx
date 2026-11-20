@@ -6,6 +6,7 @@ import { CheckCircle2, Globe, Loader2, Lock, Palette, Save } from "lucide-react"
 import { buildBrandThemeTokens } from "@/domain/theme";
 import type { Studio } from "@/domain/types";
 import { BrandAvatar } from "@/components/ui/BrandAvatar";
+import { InfoTooltip } from "@/components/ui/InfoTooltip";
 import { updateStudioBrandingAction } from "@/services/studio-actions";
 
 const PRESET_ACCENTS = [
@@ -95,9 +96,15 @@ export function BrandingStudio({ studio }: { studio: Studio }) {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-[var(--ink-secondary)]">
-              Custom Domain (Optional)
-            </label>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <label className="block text-xs font-medium text-[var(--ink-secondary)]">
+                Custom Domain (Optional)
+              </label>
+              <InfoTooltip
+                title="Custom CNAME Domain"
+                content="Map your own domain e.g. client.yourstudio.com so all portals are served directly under your agency brand."
+              />
+            </div>
             <div className="relative">
               <Globe className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-[var(--ink-muted)]" />
               <input
@@ -105,7 +112,7 @@ export function BrandingStudio({ studio }: { studio: Studio }) {
                 value={customDomain}
                 onChange={(e) => setCustomDomain(e.target.value)}
                 placeholder="client.yourname.com"
-                className="field-input pl-10"
+                className="field-input has-leading-icon"
               />
             </div>
             <p className="mt-1 text-[11px] text-[var(--ink-muted)]">
@@ -141,9 +148,15 @@ export function BrandingStudio({ studio }: { studio: Studio }) {
         {/* Brand Accent Color Picker */}
         <div className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <label className="text-xs font-medium text-[var(--ink-secondary)]">
-              Brand Accent Color
-            </label>
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-[var(--ink-secondary)]">
+                Brand Accent Color
+              </label>
+              <InfoTooltip
+                title="Brand Accent Palette"
+                content="Sets primary buttons, progress rings, and PDF accents across all your client portals."
+              />
+            </div>
             <span className="rounded-full border border-[var(--border-hairline)] bg-[var(--surface-panel)] px-3 py-1 text-[11px] font-medium">
               Button Readability: {tokens.meetsWcagAa ? "WCAG AA Verified" : "Low Contrast"}
             </span>

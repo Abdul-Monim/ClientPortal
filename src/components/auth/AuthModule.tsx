@@ -206,8 +206,8 @@ export function AuthModule({ initialMode = "login" }: AuthModuleProps) {
               </Link>
 
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-xs">
-                  <BrandLogo size={20} variant="adaptive" className="text-white dark:text-neutral-900" />
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs border border-neutral-200/80 dark:border-neutral-700/80">
+                  <BrandLogo size={20} variant="adaptive" />
                 </div>
                 <span className="font-ui text-xl font-bold tracking-tight text-neutral-900 dark:text-white">
                   ClientPortal

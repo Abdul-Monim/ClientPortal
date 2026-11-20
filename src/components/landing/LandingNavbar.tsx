@@ -52,8 +52,8 @@ export function LandingNavbar({ samplePortalHref }: LandingNavbarProps) {
       <header className="relative flex items-center justify-between pb-8 sm:pb-12 border-b border-neutral-100 dark:border-neutral-800/80">
         {/* Brand Logo & Editorial Title */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-900 transition-transform group-hover:scale-105">
-            <BrandLogo size={24} variant="adaptive" className="text-white dark:text-neutral-900" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs border border-neutral-200/80 dark:border-neutral-700/80 transition-transform group-hover:scale-105">
+            <BrandLogo size={22} variant="adaptive" />
           </div>
           <span className="font-ui text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
             ClientPortal
@@ -161,8 +161,8 @@ export function LandingNavbar({ samplePortalHref }: LandingNavbarProps) {
               <div>
                 <div className="flex items-center justify-between pb-6 border-b border-neutral-100 dark:border-neutral-800">
                   <div className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
-                      <BrandLogo size={18} variant="adaptive" className="text-white dark:text-neutral-900" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white border border-neutral-200/80 dark:border-neutral-700/80">
+                      <BrandLogo size={18} variant="adaptive" />
                     </div>
                     <span className="font-ui text-lg font-bold text-neutral-900 dark:text-white">
                       ClientPortal

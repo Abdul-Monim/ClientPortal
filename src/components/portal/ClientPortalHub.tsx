@@ -42,6 +42,7 @@ import { BrandAvatar } from "@/components/ui/BrandAvatar";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { InfoTooltip } from "@/components/ui/InfoTooltip";
 
 export type PortalTab =
   | "overview"
@@ -661,13 +662,13 @@ export function ClientPortalHub({
           <div className="flex items-center gap-2.5">
             {/* Quick Search Input Capsule */}
             <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter deliverables or milestones..."
-                className="w-48 sm:w-64 rounded-full bg-neutral-100 dark:bg-neutral-800/80 pl-8 pr-3 py-1.5 text-xs text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500 border border-transparent dark:border-neutral-700/60"
+                className="w-48 sm:w-64 rounded-full bg-neutral-100 dark:bg-neutral-800/80 pl-9 pr-8 py-1.5 text-xs text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-hidden focus:ring-1 focus:ring-blue-500 border border-transparent dark:border-neutral-700/60"
               />
               {searchQuery && (
                 <button
@@ -775,29 +776,53 @@ export function ClientPortalHub({
             {/* 4 Hosty Pastel Metric Cards */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="rounded-2xl bg-[#DDF0F8] p-5 text-[#133E53] shadow-xs dark:bg-[#162738] dark:text-[#BAE6FD] border border-blue-200/40 dark:border-blue-800/40">
-                <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Progress Velocity</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Progress Velocity</div>
+                  <InfoTooltip
+                    title="Progress Velocity"
+                    content="Calculated from weighted milestone completion across your project schedule."
+                  />
+                </div>
                 <div className="mt-2 text-3xl font-bold">{progressPct}%</div>
                 <div className="mt-1 text-xs opacity-80">{milestoneCount.completed} of {milestoneCount.total} milestones locked</div>
               </div>
 
               <div className="rounded-2xl bg-[#E6F7D8] p-5 text-[#1F4E24] shadow-xs dark:bg-[#1A3320] dark:text-[#BBF7D0] border border-emerald-200/40 dark:border-emerald-800/40">
-                <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Approved Assets</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Approved Assets</div>
+                  <InfoTooltip
+                    title="Approved Deliverables"
+                    content="Deliverables you have reviewed and formally approved for this project."
+                  />
+                </div>
                 <div className="mt-2 text-3xl font-bold">{approvedDeliverablesCount}</div>
                 <div className="mt-1 text-xs opacity-80">Full client sign-off confirmed</div>
               </div>
 
               <div className="rounded-2xl bg-[#FED7AA] p-5 text-[#7C2D12] shadow-xs dark:bg-[#3D2516] dark:text-[#FED7AA] border border-amber-200/40 dark:border-amber-800/40">
-                <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Review Queue</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Review Queue</div>
+                  <InfoTooltip
+                    title="Awaiting Review"
+                    content="Work published by the studio ready for your inspection and feedback."
+                  />
+                </div>
                 <div className="mt-2 text-3xl font-bold">{pendingReviewCount}</div>
                 <div className="mt-1 text-xs opacity-80">
                   {pendingReviewCount > 0 ? "Awaiting your feedback" : "All assets approved"}
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-neutral-900 p-5 text-neutral-100 shadow-xs dark:bg-[#111726] dark:text-neutral-100 border border-neutral-800 ring-1 ring-white/10">
-                <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Total Settled</div>
-                <div className="mt-2 text-3xl font-bold text-white">{formatCurrencyCents(totalPaidCents)}</div>
-                <div className="mt-1 text-xs text-neutral-400">
+              <div className="rounded-2xl bg-[#F1EEFE] p-5 text-[#4C1D95] shadow-xs dark:bg-[#251D3A] dark:text-[#DDD6FE] border border-purple-200/40 dark:border-purple-800/40">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold uppercase tracking-wider opacity-70">Total Settled</div>
+                  <InfoTooltip
+                    title="Settled Invoices"
+                    content="Total payments settled to the studio via Stripe card checkout or wire transfer."
+                  />
+                </div>
+                <div className="mt-2 text-3xl font-bold">{formatCurrencyCents(totalPaidCents)}</div>
+                <div className="mt-1 text-xs opacity-80">
                   {balanceOwedCents > 0 ? `${formatCurrencyCents(balanceOwedCents)} outstanding` : "Fully settled"}
                 </div>
               </div>

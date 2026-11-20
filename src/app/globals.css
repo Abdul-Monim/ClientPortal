@@ -109,9 +109,22 @@
   border: 1px solid var(--border-hairline);
   background-color: var(--surface-canvas);
   color: var(--ink-primary);
-  padding: 0.7rem 1rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   font-size: 0.9rem;
   transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.field-input.has-leading-icon,
+.has-leading-icon {
+  padding-left: 2.75rem !important;
+}
+
+.field-input.has-trailing-icon,
+.has-trailing-icon {
+  padding-right: 2.75rem !important;
 }
 
 .field-input:focus {

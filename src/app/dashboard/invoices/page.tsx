@@ -118,18 +118,18 @@ export default async function InvoicesPage() {
           </div>
         </div>
 
-        {/* Dark Slate Card: Invoicing Engine Mode */}
-        <div className="rounded-2xl bg-neutral-800/90 p-5 text-neutral-200 shadow-xs dark:bg-[#1A202C] dark:text-neutral-100 ring-1 ring-neutral-700/60">
+        {/* Lavender / Purple Card: Invoicing Engine Mode */}
+        <div className="rounded-2xl bg-[#F1EEFE] p-5 text-[#4C1D95] shadow-xs dark:bg-[#251D3A] dark:text-[#DDD6FE]">
           <div className="flex items-center justify-between">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-700/80 text-neutral-200">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-200/70 text-[#4C1D95] dark:bg-purple-900/60 dark:text-purple-300">
               <CreditCard className="h-4 w-4" />
             </div>
-            <span className="inline-flex items-center gap-0.5 rounded-full bg-neutral-700 px-2 py-0.5 text-[11px] font-semibold text-white">
+            <span className="inline-flex items-center gap-0.5 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-neutral-900 dark:bg-neutral-800 dark:text-neutral-200 shadow-xs">
               {isStripeConfigured() ? "Stripe Live" : "Native PDF"}
             </span>
           </div>
           <div className="mt-4 text-3xl font-bold tracking-tight">100%</div>
-          <div className="mt-1 text-xs font-medium text-neutral-400">
+          <div className="mt-1 text-xs font-medium text-neutral-600 dark:text-neutral-300">
             Branded PDF & Card Readiness
           </div>
         </div>
